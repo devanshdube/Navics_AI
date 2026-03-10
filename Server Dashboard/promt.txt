@@ -1,0 +1,7 @@
+Mera Project React.js, Node.js, Express.js, Mysql me hai.
+
+Muja ye karna hai ki, mene abhi 1 dashboard banaya hu jisme do module hai Teacher and Students, ab karna ye hai ki Teacher jo bhi Notes upload kare ga like Images, Audios, Videos, Documents, PDF ye notes students ko dekhega but yaha per ek condition hai -> wo ye hai ki teacher notes kase share karega ga? 
+1. Wo particular ek student ko share kar sakta hai.
+2. wo students ka group banakar kar sakta hai.
+3. Group multiple bhi ho sakte hai, groups ko naam bhi diya ja sakta hai.
+4. ek student multiple groups me bhi ho sakta hai
