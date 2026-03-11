@@ -5,12 +5,14 @@ import {
   ChevronsRight,
   ShieldCheck,
   Users,
+  Building2, 
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../Redux/user/userSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 import DashboardContent from "./Content/DashboardContent";
 import StudentList from "./Content/StudentList";
+import CompanyRegister from "./Content/CompanyRegister";
 
 export default function DashboardAdmin() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -35,6 +37,7 @@ export default function DashboardAdmin() {
 
   const menuItems = [
     { id: "dashboard", label: "Dashboard", icon: Home },
+    { id: "companyRegister", label: "Add Company", icon: Building2 },
     { id: "students", label: "Students", icon: Users },
   ];
 
@@ -42,6 +45,8 @@ export default function DashboardAdmin() {
     switch (activeMenu) {
       case "dashboard":
         return <DashboardContent />;
+      case "companyRegister":
+        return <CompanyRegister />;
       case "students":
         return <StudentList />;
       default:
@@ -83,7 +88,7 @@ export default function DashboardAdmin() {
           style={{ borderColor: "#0e1726" }}
         >
           {sidebarOpen && (
-            <h1 className="text-xl font-bold text-[#707070]">AEGIS</h1>
+            <h1 className="text-xl font-bold text-[#707070]">NaviCS AI</h1>
           )}
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}

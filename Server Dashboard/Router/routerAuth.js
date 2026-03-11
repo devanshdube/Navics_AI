@@ -4,26 +4,30 @@ const path = require("path");
 const fs = require("fs");
 const {
   registerAdmin,
-  registerStudent,
+  registerMember,
+  registerClientCompany,
+  registerCompanyUser,
   login,
   forgotPassword,
   verifyOtpAndResetPassword,
 } = require("../Controller/controllerAuth");
-const { updateStudentProfile } = require("../Controller/controllerUpdate");
-const { getAllStudent } = require("../Controller/controllerGet");
+// const { updateStudentProfile } = require("../Controller/controllerUpdate");
+// const { getAllStudent } = require("../Controller/controllerGet");
 
 const router = express.Router();
 
 router.post("/registerAdmin", registerAdmin);
-router.post("/registerStudent", registerStudent);
+router.post("/registerMember", registerMember);
+router.post("/registerClientCompany", registerClientCompany);
+router.post("/registerCompanyUser", registerCompanyUser);
 router.post("/login", login);
 router.post("/forgotPassword", forgotPassword);
 router.post("/verifyOtpAndResetPassword", verifyOtpAndResetPassword);
 
-// UPDATE API's
-router.put("/updateStudentProfile/:id", updateStudentProfile);
+// // UPDATE API's
+// router.put("/updateStudentProfile/:id", updateStudentProfile);
 
-// GET API's
-router.get("/getAllStudent", getAllStudent)
+// // GET API's
+// router.get("/getAllStudent", getAllStudent)
 
 module.exports = router;

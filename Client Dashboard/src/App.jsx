@@ -10,7 +10,7 @@ import Register from "./Auth/Register";
 function App() {
   const { currentUser } = useSelector((state) => state.user);
 
-  const role = currentUser?.designation?.toLowerCase(); // ✅ matches your backend field
+  const role = currentUser?.role?.toLowerCase(); // ✅ matches your backend field
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
@@ -18,50 +18,35 @@ function App() {
         <Route
           path="/"
           element={
+            !currentUser ? <Login /> : <Navigate to={`/${role}`} replace />
+          }
+        />
+        {/* <Route
+          path="/"
+          element={
             !currentUser ? (
               <Login />
             ) : role === "admin" ? (
               <DashboardAdmin />
-            ) : role === "user" ? (
-              <DashboardStudent />
-            ) : (
-              <Navigate to="/" replace />
-            )
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            !currentUser ? (
-              <Register />
-            ) : role === "admin" ? (
-              <DashboardAdmin />
-            ) : role === "user" ? (
-              <DashboardStudent />
-            ) : (
-              <Navigate to="/" replace />
-            )
-          }
-        />
-        {/* <Route
-          path="/forgot-password"
-          element={
-            !currentUser ? (
-              <ForgotPassword />
-            ) : role === "admin" ? (
-              <DashboardAdmin />
-            ) : role === "user" ? (
+            ) : role === "member" ? (
               <DashboardStudent />
             ) : (
               <Navigate to="/" replace />
             )
           }
         /> */}
+        <Route
+          path="/register"
+          element={
+            !currentUser ? <Register /> : <Navigate to={`/${role}`} replace />
+          }
+        />
+
         {role === "admin" && (
           <Route path="/admin/*" element={<DashboardAdmin />} />
         )}
-        {role === "user" && (
-          <Route path="/user/*" element={<DashboardStudent />} />
+        {role === "member" && (
+          <Route path="/member/*" element={<DashboardStudent />} />
         )}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

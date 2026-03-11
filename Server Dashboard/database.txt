@@ -1,44 +1,53 @@
 // create dataabase query
-CREATE DATABASE aegis;
+CREATE DATABASE navics_ai;
 
 // use database query
-use aegis;
+use navics_ai;
 
-// Admin Tables
-CREATE TABLE IF NOT EXISTS admins(
+// Navics Member Tables
+CREATE TABLE IF NOT EXISTS navics_member(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(250) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     mobile VARCHAR(15) NOT NULL UNIQUE,
-    designation VARCHAR(100) NOT NULL,
+    role VARCHAR(100) NOT NULL,
     status ENUM('active','inactive') DEFAULT 'active',
     password VARCHAR(255) NOT NULL,
     created_at VARCHAR(255),
     updated_at VARCHAR(255) DEFAULT NULL
 );
 
-// Users Tables
-CREATE TABLE IF NOT EXISTS users(
+// Navics Client Company Tables
+CREATE TABLE IF NOT EXISTS navics_client_company(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(250) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    mobile VARCHAR(15) NOT NULL UNIQUE,
-    alt_mobile VARCHAR(15) DEFAULT NULL,
-    designation VARCHAR(100) NOT NULL,
-    course VARCHAR(255),
-    roll_no VARCHAR(100),
-    college_name VARCHAR(555) NOT NULL,
-    degree VARCHAR(255),
-    semester VARCHAR(255),
-    complete_year VARCHAR(100),
-    address TEXT,
-    city VARCHAR(100),
-    state VARCHAR(255),
-    pincode VARCHAR(10),
-    profileImg VARCHAR(500),
-    password VARCHAR(255) NOT NULL,
+    company_name VARCHAR(250) NOT NULL,
+    email VARCHAR(255) NULL UNIQUE,
+    mobile VARCHAR(15) NULL UNIQUE,
+    total_user_count INT UNSIGNED NOT NULL DEFAULT 0,
+    details TEXT,
     status ENUM('active','inactive') DEFAULT 'active',
-    document_status ENUM('active','inactive') DEFAULT 'inactive',
     created_at VARCHAR(255),
     updated_at VARCHAR(255) DEFAULT NULL
+);
+
+// Navics Company Users Tables
+CREATE TABLE IF NOT EXISTS navics_company_users(
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    company_id INT UNSIGNED NOT NULL,
+    employee_id VARCHAR(250) NOT NULL, 
+    user_name VARCHAR(250) NOT NULL,
+    email VARCHAR(255) NULL UNIQUE,
+    mobile VARCHAR(15) NULL UNIQUE,
+    role VARCHAR(100) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    details TEXT,
+    status ENUM('active','inactive') DEFAULT 'active',
+    created_at VARCHAR(255),
+    updated_at VARCHAR(255) DEFAULT NULL,
+
+    CONSTRAINT fk_company
+    FOREIGN KEY (company_id)
+    REFERENCES navics_client_company(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
