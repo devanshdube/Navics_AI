@@ -51,3 +51,37 @@ CREATE TABLE IF NOT EXISTS navics_company_users(
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
+
+CREATE TABLE regions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    region_name VARCHAR(100) UNIQUE
+);
+
+CREATE TABLE countries (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    country_name VARCHAR(100),
+    region_id INT,
+    FOREIGN KEY (region_id) REFERENCES regions(id)
+);
+
+CREATE TABLE country_performance (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    country_id INT,
+    month DATE,
+    trade VARCHAR(100),
+    channel VARCHAR(50),
+    container INT,
+    revenue BIGINT,
+    unit_cost INT,
+    FOREIGN KEY (country_id) REFERENCES countries(id)
+);
+
+CREATE TABLE region_targets (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    region_id INT,
+    trade VARCHAR(100),
+    target_measure VARCHAR(100),
+    month DATE,
+    target_value BIGINT,
+    FOREIGN KEY (region_id) REFERENCES regions(id)
+);
