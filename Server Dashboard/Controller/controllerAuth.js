@@ -263,16 +263,7 @@ const registerClientCompany = async (req, res) => {
 
 const registerCompanyUser = async (req, res) => {
 
-  const {
-    company_id,
-    employee_id,
-    user_name,
-    email,
-    mobile,
-    role,
-    password,
-    details
-  } = req.body;
+  const { company_id, employee_id, user_name, email, mobile, role, password, details } = req.body;
 
   const createdAt = moment()
     .tz("Asia/Kolkata")
@@ -281,76 +272,91 @@ const registerCompanyUser = async (req, res) => {
   if (!company_id || !employee_id || !user_name || !role || !password) {
     return res.status(400).json({
       status: "Failure",
-      message: "Required fields missing",
+      message: "Required fields missing"
     });
   }
 
   try {
 
+    // 1️⃣ Get allowed user count from company table
     db.query(
-      "SELECT id FROM navics_company_users WHERE email = ? OR mobile = ?",
-      [email, mobile],
-      async (err, results) => {
+      "SELECT total_user_count FROM navics_client_company WHERE id = ?",
+      [company_id],
+      (err, companyResult) => {
 
         if (err) {
           return res.status(500).json({
             status: "Failure",
             message: "Database error",
-            error: err,
+            error: err
           });
         }
 
-        if (results.length > 0) {
-          return res.status(409).json({
+        if (companyResult.length === 0) {
+          return res.status(404).json({
             status: "Failure",
-            message: "User already exists",
+            message: "Company not found"
           });
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const allowedUsers = companyResult[0].total_user_count;
 
-        const insertQuery = `
-        INSERT INTO navics_company_users
-        (company_id, employee_id, user_name, email, mobile, role, password, details, status, created_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `;
-
+        // 2️⃣ Count existing users
         db.query(
-          insertQuery,
-          [
-            company_id,
-            employee_id,
-            user_name,
-            email,
-            mobile,
-            role,
-            hashedPassword,
-            details,
-            "active",
-            createdAt
-          ],
-          (err, result) => {
+          "SELECT COUNT(*) AS userCount FROM navics_company_users WHERE company_id = ?",
+          [company_id],
+          (err, userResult) => {
 
             if (err) {
               return res.status(500).json({
                 status: "Failure",
-                message: "Database insert error",
-                error: err,
+                message: "Database error",
+                error: err
               });
             }
 
-            return res.status(201).json({
-              status: "Success",
-              message: "Company user registered successfully",
-              data: {
-                id: result.insertId,
-                company_id,
-                employee_id,
-                user_name,
-                role,
-                status: "active",
-              },
-            });
+            const currentUsers = userResult[0].userCount;
+
+            // 3️⃣ Check limit
+            if (currentUsers >= allowedUsers) {
+              return res.status(403).json({
+                status: "Failure",
+                message: "User limit reached for this company"
+              });
+            }
+
+            // 4️⃣ Insert new user
+            const insertQuery = `
+            INSERT INTO navics_company_users
+            (company_id, employee_id, user_name, email, mobile, role, password, details, status, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `;
+
+            db.query(
+              insertQuery,
+              [company_id, employee_id, user_name, email, mobile, role, password, details, "active", createdAt],
+              (err, result) => {
+
+                if (err) {
+                  return res.status(500).json({
+                    status: "Failure",
+                    message: "Database insert error",
+                    error: err
+                  });
+                }
+
+                return res.status(201).json({
+                  status: "Success",
+                  message: "User registered successfully",
+                  data: {
+                    id: result.insertId,
+                    company_id,
+                    user_name,
+                    role
+                  }
+                });
+              }
+            );
 
           }
         );
@@ -362,11 +368,117 @@ const registerCompanyUser = async (req, res) => {
     return res.status(500).json({
       status: "Failure",
       message: "Server error",
-      error,
+      error
     });
   }
-
 };
+
+// const registerCompanyUser = async (req, res) => {
+
+//   const {
+//     company_id,
+//     employee_id,
+//     user_name,
+//     email,
+//     mobile,
+//     role,
+//     password,
+//     details
+//   } = req.body;
+
+//   const createdAt = moment()
+//     .tz("Asia/Kolkata")
+//     .format("YYYY-MM-DD HH:mm:ss");
+
+//   if (!company_id || !employee_id || !user_name || !role || !password) {
+//     return res.status(400).json({
+//       status: "Failure",
+//       message: "Required fields missing",
+//     });
+//   }
+
+//   try {
+
+//     db.query(
+//       "SELECT id FROM navics_company_users WHERE email = ? OR mobile = ?",
+//       [email, mobile],
+//       async (err, results) => {
+
+//         if (err) {
+//           return res.status(500).json({
+//             status: "Failure",
+//             message: "Database error",
+//             error: err,
+//           });
+//         }
+
+//         if (results.length > 0) {
+//           return res.status(409).json({
+//             status: "Failure",
+//             message: "User already exists",
+//           });
+//         }
+
+//         const hashedPassword = await bcrypt.hash(password, 10);
+
+//         const insertQuery = `
+//         INSERT INTO navics_company_users
+//         (company_id, employee_id, user_name, email, mobile, role, password, details, status, created_at)
+//         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+//         `;
+
+//         db.query(
+//           insertQuery,
+//           [
+//             company_id,
+//             employee_id,
+//             user_name,
+//             email,
+//             mobile,
+//             role,
+//             hashedPassword,
+//             details,
+//             "active",
+//             createdAt
+//           ],
+//           (err, result) => {
+
+//             if (err) {
+//               return res.status(500).json({
+//                 status: "Failure",
+//                 message: "Database insert error",
+//                 error: err,
+//               });
+//             }
+
+//             return res.status(201).json({
+//               status: "Success",
+//               message: "Company user registered successfully",
+//               data: {
+//                 id: result.insertId,
+//                 company_id,
+//                 employee_id,
+//                 user_name,
+//                 role,
+//                 status: "active",
+//               },
+//             });
+
+//           }
+//         );
+
+//       }
+//     );
+
+//   } catch (error) {
+//     return res.status(500).json({
+//       status: "Failure",
+//       message: "Server error",
+//       error,
+//     });
+//   }
+
+// };
 
 const handleAuth = async (data, role, password, res) => {
 
