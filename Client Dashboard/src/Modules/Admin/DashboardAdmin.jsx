@@ -16,6 +16,8 @@ import CompanyRegister from "./Content/CompanyRegister";
 import DashboardCharts from "./Content/DashboardCharts";
 import DashboardAnalytics from "./Content/DashboardAnalytics";
 import CompanyList from "./Content/CompanyList";
+import YoutubeAnalytics from "./Content/YoutubeAnalytics";
+import DashboardTwitter from "./Content/DashboardTwitter";
 
 export default function DashboardAdmin() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -48,6 +50,8 @@ export default function DashboardAdmin() {
     { id: "dashboard", label: "Dashboard", icon: Home },
     { id: "companyRegister", label: "Add Company", icon: Building2 },
     { id: "charts", label: "Charts", icon: Users },
+    { id: "youcharts", label: "YouTube Charts", icon: Users },
+    { id: "xcharts", label: "Twitter Charts", icon: Users },
     { id: "users", label: "User List", icon: Users },
   ];
 
@@ -59,6 +63,10 @@ export default function DashboardAdmin() {
         return <CompanyRegister />;
       case "charts":
         return <DashboardAnalytics />;
+      case "youcharts":
+        return <YoutubeAnalytics />;
+      case "xcharts":
+        return <DashboardTwitter />;
       case "users":
         return <CompanyList />;
       default:

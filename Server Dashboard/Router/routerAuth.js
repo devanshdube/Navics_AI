@@ -11,8 +11,26 @@ const {
   forgotPassword,
   verifyOtpAndResetPassword,
 } = require("../Controller/controllerAuth");
-const { getRevenueByRegion, getRevenueByCountry, getRevenueTrend, getTargetVsRevenueByRegion } = require("../Controller/controllerChart");
-const { getAllCompanies, getCompanies, getCompanyUsers } = require("../Controller/controllerGet");
+const {
+  getRevenueByRegion,
+  getRevenueByCountry,
+  getRevenueTrend,
+  getTargetVsRevenueByRegion,
+  stats,
+  chart,
+  trend,
+  topComments,
+  comments,
+  getSummary,
+  getChart,
+  getGeoTargetByRegion,
+  getGeoByCountry,
+} = require("../Controller/controllerChart");
+const {
+  getAllCompanies,
+  getCompanies,
+  getCompanyUsers,
+} = require("../Controller/controllerGet");
 // const { updateStudentProfile } = require("../Controller/controllerUpdate");
 // const { getAllStudent } = require("../Controller/controllerGet");
 
@@ -38,5 +56,16 @@ router.get("/getRevenueByRegion", getRevenueByRegion);
 router.get("/getRevenueByCountry", getRevenueByCountry);
 router.get("/getRevenueTrend", getRevenueTrend);
 router.get("/getTargetVsRevenueByRegion", getTargetVsRevenueByRegion);
+router.get("/getGeoTargetByRegion", getGeoTargetByRegion);
+router.get("/getGeoByCountry", getGeoByCountry);
+// Youtube Chart GET
+router.get("/stats", stats);
+router.get("/chart", chart);
+router.get("/trend", trend);
+router.get("/top-comments", topComments);
+router.get("/comments", comments);
+// Twitter Chart GET
+router.get("/summary", getSummary);
+router.get("/getChart", getChart);
 
 module.exports = router;

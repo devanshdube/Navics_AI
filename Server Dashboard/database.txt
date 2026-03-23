@@ -85,3 +85,28 @@ CREATE TABLE region_targets (
     target_value BIGINT,
     FOREIGN KEY (region_id) REFERENCES regions(id)
 );
+
+CREATE TABLE youtube_sentiments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    video_id VARCHAR(255),
+    comment_id VARCHAR(255),
+    comment TEXT,
+    like_count INT DEFAULT 0,
+    sentiment ENUM('positive','negative','neutral'),
+    published_date DATETIME,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE twitter_data (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    tweet_id VARCHAR(50),
+    content TEXT,
+    url TEXT,
+    likes INT DEFAULT 0,
+    retweet INT DEFAULT 0,
+    replies INT DEFAULT 0,
+    quotes INT DEFAULT 0,
+    views INT DEFAULT 0,
+    tweet_date DATETIME,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

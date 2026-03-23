@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 21, 2026 at 06:47 AM
+-- Generation Time: Mar 23, 2026 at 05:31 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -1577,6 +1577,124 @@ INSERT INTO `region_targets` (`id`, `region_id`, `trade`, `target_measure`, `mon
 (143, 3, 'Asia - North America', 'Revenue', '2024-11-01', 9879000),
 (144, 3, 'Asia - North America', 'Revenue', '2024-12-01', 9072000);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `twitter_data`
+--
+
+CREATE TABLE `twitter_data` (
+  `id` int(11) NOT NULL,
+  `tweet_id` varchar(50) DEFAULT NULL,
+  `content` text DEFAULT NULL,
+  `url` text DEFAULT NULL,
+  `likes` int(11) DEFAULT 0,
+  `retweet` int(11) DEFAULT 0,
+  `replies` int(11) DEFAULT 0,
+  `quotes` int(11) DEFAULT 0,
+  `views` int(11) DEFAULT 0,
+  `tweet_date` datetime DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `twitter_data`
+--
+
+INSERT INTO `twitter_data` (`id`, `tweet_id`, `content`, `url`, `likes`, `retweet`, `replies`, `quotes`, `views`, `tweet_date`, `created_at`) VALUES
+(1, 'T001', 'Great product launch!', 'https://twitter.com/post1', 1, 0, 0, 0, 10, '2026-02-05 10:00:00', '2026-03-21 17:07:12'),
+(2, 'T002', 'Not satisfied with service', 'https://twitter.com/post2', 0, 0, 0, 0, 2, '2026-02-05 12:00:00', '2026-03-21 17:07:12'),
+(3, 'T003', 'Average experience', 'https://twitter.com/post3', 0, 0, 0, 0, 1, '2026-02-05 14:00:00', '2026-03-21 17:07:12'),
+(4, 'T004', 'Amazing service experience', 'https://twitter.com/post4', 5, 1, 0, 0, 50, '2026-02-06 10:00:00', '2026-03-22 14:46:49'),
+(5, 'T005', 'Very bad support', 'https://twitter.com/post5', 0, 0, 1, 0, 5, '2026-02-06 11:00:00', '2026-03-22 14:46:49'),
+(6, 'T006', 'Loved the features', 'https://twitter.com/post6', 10, 2, 1, 0, 120, '2026-02-06 12:00:00', '2026-03-22 14:46:49'),
+(7, 'T007', 'Could be better', 'https://twitter.com/post7', 2, 0, 0, 0, 20, '2026-02-06 13:00:00', '2026-03-22 14:46:49'),
+(8, 'T008', 'Excellent UI design', 'https://twitter.com/post8', 8, 1, 0, 1, 90, '2026-02-06 14:00:00', '2026-03-22 14:46:49'),
+(9, 'T009', 'App crashes frequently', 'https://twitter.com/post9', 1, 0, 2, 0, 15, '2026-02-06 15:00:00', '2026-03-22 14:46:49'),
+(10, 'T010', 'Fast and reliable', 'https://twitter.com/post10', 12, 3, 1, 1, 150, '2026-02-06 16:00:00', '2026-03-22 14:46:49'),
+(11, 'T011', 'Not user friendly', 'https://twitter.com/post11', 0, 0, 1, 0, 8, '2026-02-06 17:00:00', '2026-03-22 14:46:49'),
+(12, 'T012', 'Great customer care', 'https://twitter.com/post12', 9, 2, 0, 0, 110, '2026-02-06 18:00:00', '2026-03-22 14:46:49'),
+(13, 'T013', 'Average performance', 'https://twitter.com/post13', 3, 0, 0, 0, 30, '2026-02-06 19:00:00', '2026-03-22 14:46:49'),
+(14, 'T014', 'Highly recommended', 'https://twitter.com/post14', 15, 4, 2, 1, 200, '2026-02-06 20:00:00', '2026-03-22 14:46:49'),
+(15, 'T015', 'Waste of money', 'https://twitter.com/post15', 0, 0, 1, 0, 6, '2026-02-07 09:00:00', '2026-03-22 14:46:49'),
+(16, 'T016', 'Good value for price', 'https://twitter.com/post16', 7, 1, 0, 0, 80, '2026-02-07 10:00:00', '2026-03-22 14:46:49'),
+(17, 'T017', 'Facing login issues', 'https://twitter.com/post17', 1, 0, 1, 0, 12, '2026-02-07 11:00:00', '2026-03-22 14:46:49'),
+(18, 'T018', 'Smooth experience', 'https://twitter.com/post18', 11, 2, 1, 0, 130, '2026-02-07 12:00:00', '2026-03-22 14:46:49'),
+(19, 'T019', 'Needs improvement', 'https://twitter.com/post19', 2, 0, 0, 0, 25, '2026-02-07 13:00:00', '2026-03-22 14:46:49'),
+(20, 'T020', 'Fantastic support', 'https://twitter.com/post20', 13, 3, 1, 1, 160, '2026-02-07 14:00:00', '2026-03-22 14:46:49'),
+(21, 'T021', 'Not worth it', 'https://twitter.com/post21', 0, 0, 1, 0, 7, '2026-02-07 15:00:00', '2026-03-22 14:46:49'),
+(22, 'T022', 'Loved using it', 'https://twitter.com/post22', 14, 2, 1, 0, 170, '2026-02-07 16:00:00', '2026-03-22 14:46:49'),
+(23, 'T023', 'Slow loading', 'https://twitter.com/post23', 1, 0, 1, 0, 18, '2026-02-07 17:00:00', '2026-03-22 14:46:49'),
+(24, 'T024', 'Great innovation', 'https://twitter.com/post24', 16, 4, 2, 1, 210, '2026-02-07 18:00:00', '2026-03-22 14:46:49'),
+(25, 'T025', 'Bad UI', 'https://twitter.com/post25', 0, 0, 1, 0, 9, '2026-02-07 19:00:00', '2026-03-22 14:46:49'),
+(26, 'T026', 'Nice performance', 'https://twitter.com/post26', 6, 1, 0, 0, 70, '2026-02-07 20:00:00', '2026-03-22 14:46:49'),
+(27, 'T027', 'Buggy update', 'https://twitter.com/post27', 1, 0, 2, 0, 14, '2026-02-08 09:00:00', '2026-03-22 14:46:49'),
+(28, 'T028', 'Super smooth', 'https://twitter.com/post28', 18, 5, 2, 1, 250, '2026-02-08 10:00:00', '2026-03-22 14:46:49'),
+(29, 'T029', 'Okay experience', 'https://twitter.com/post29', 3, 0, 0, 0, 35, '2026-02-08 11:00:00', '2026-03-22 14:46:49'),
+(30, 'T030', 'Loved it overall', 'https://twitter.com/post30', 20, 6, 3, 2, 300, '2026-02-08 12:00:00', '2026-03-22 14:46:49'),
+(31, 'T031', 'Needs bug fixes', 'https://twitter.com/post31', 2, 0, 1, 0, 22, '2026-02-08 13:00:00', '2026-03-22 14:46:49'),
+(32, 'T032', 'Very efficient', 'https://twitter.com/post32', 17, 3, 1, 1, 220, '2026-02-08 14:00:00', '2026-03-22 14:46:49'),
+(33, 'T033', 'Terrible experience', 'https://twitter.com/post33', 0, 0, 2, 0, 10, '2026-02-08 15:00:00', '2026-03-22 14:46:49');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `youtube_sentiments`
+--
+
+CREATE TABLE `youtube_sentiments` (
+  `id` int(11) NOT NULL,
+  `video_id` varchar(255) DEFAULT NULL,
+  `comment_id` varchar(255) DEFAULT NULL,
+  `comment` text DEFAULT NULL,
+  `like_count` int(11) DEFAULT 0,
+  `sentiment` enum('positive','negative','neutral') DEFAULT NULL,
+  `published_date` datetime DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `youtube_sentiments`
+--
+
+INSERT INTO `youtube_sentiments` (`id`, `video_id`, `comment_id`, `comment`, `like_count`, `sentiment`, `published_date`, `created_at`) VALUES
+(1, 'XHaKy1gnvQc', 'Ugx3l47pi-FItVbb58x4AaABAg', 'Very good job thank you', 0, 'positive', '2026-03-19 11:06:30', '2026-03-21 07:15:26'),
+(2, 'XHaKy1gnvQc', 'UgzMsVfGnmmtEQg2C414AaABAg', 'Great very nice??', 0, 'positive', '2026-03-19 11:05:35', '2026-03-21 07:15:26'),
+(3, 'XHaKy1gnvQc', 'UgzxI9OUkKxZR7AX8v94AaABAg', 'Join the AI Masterclass here: https://academy.dhruvrathee.com/aimasterclass\r\nThe fastest and most affordable way to upskill yourself in AI', 3407, 'neutral', '2026-03-13 22:36:26', '2026-03-21 07:15:26'),
+(4, 'XHaKy1gnvQc', 'Ugzp7MYaO6HJ5YM07cR4AaABAg', 'Sir App TV channel ke jariye India mai aye..', 0, 'neutral', '2026-03-19 10:58:04', '2026-03-21 07:15:26'),
+(5, 'XHaKy1gnvQc', 'Ugwwn0a0DiCICz9XBsR4AaABAg', 'Bhai me apke pas kam pie karuga', 0, 'neutral', '2026-03-19 10:56:35', '2026-03-21 07:15:26'),
+(6, 'XHaKy1gnvQc', 'Ugy9i_ISWYPhZO5P-z54AaABAg', 'rg??', 0, 'neutral', '2026-03-19 10:52:43', '2026-03-21 07:15:26'),
+(7, 'XHaKy1gnvQc', 'Ugy1gss2bt9QzPIRSVZ4AaABAg', 'Ye template suna suna sa lag raha hai, Oppenhei-', 1, 'neutral', '2026-03-19 10:39:55', '2026-03-21 07:15:26'),
+(8, 'XHaKy1gnvQc', 'UgzmcRiUI-G1ZB0f57t4AaABAg', '13:11 same happens with adityanath yogi', 0, 'neutral', '2026-03-19 10:21:58', '2026-03-21 07:15:26'),
+(9, 'XHaKy1gnvQc', 'Ugwarc5V6nWuXBHBftV4AaABAg', 'Omg shi me news channel shi bola Hai...', 0, 'negative', '2026-03-19 11:13:35', '2026-03-21 07:15:26'),
+(10, 'XHaKy1gnvQc', 'Ugzp_3MIw6nfGGxHA6l4AaABAg', 'Also look at Sonam wangchuk...', 0, 'negative', '2026-03-19 11:07:30', '2026-03-21 07:15:26'),
+(11, 'XHaKy1gnvQc', 'UgxQ-B0QqaV7e1xhrRJ4AaABAg', 'Tu to khud congress ka aadmi he', 0, 'negative', '2026-03-19 11:06:54', '2026-03-21 07:15:26'),
+(12, 'XHaKy1gnvQc', 'Ugzp_3MIw6nfGGxHA6l4AaABAg', 'Also look at Sonam Wangchuk...', 0, 'negative', '2026-03-19 11:07:30', '2026-03-21 07:15:26'),
+(13, 'XHaKy1gnvQc', 'UgxQ-B0QqaV7e1xhrRJ4AaABAg', 'Tu to khud congress ka aadmi he', 0, 'negative', '2026-03-19 11:06:54', '2026-03-21 07:15:26'),
+(14, 'XHaKy1gnvQc', 'UgzW1k9EoXjVQ0MZBMR4AaABAg', 'Fake narrative spread kar raha hai', 2, 'negative', '2026-03-19 10:59:10', '2026-03-21 07:15:26'),
+(15, 'XHaKy1gnvQc', 'Ugzw1YFzT1example01', 'Bhai tum biased ho', 1, 'negative', '2026-03-19 10:55:21', '2026-03-21 07:15:26'),
+(16, 'XHaKy1gnvQc', 'Ugzw1YFzT1example02', 'Ye sab propaganda hai', 0, 'negative', '2026-03-19 10:54:10', '2026-03-21 07:15:26'),
+(17, 'XHaKy1gnvQc', 'Ugzw1YFzT1example03', 'Kuch bhi bol raha hai', 0, 'negative', '2026-03-19 10:50:00', '2026-03-21 07:15:26'),
+(18, 'XHaKy1gnvQc', 'Ugzw1YFzT1example04', 'Not convinced at all', 3, 'negative', '2026-03-19 10:48:33', '2026-03-21 07:15:26'),
+(19, 'XHaKy1gnvQc', 'Ugzw1YFzT1example05', 'Very misleading content', 0, 'negative', '2026-03-19 10:45:10', '2026-03-21 07:15:26'),
+(20, 'XHaKy1gnvQc', 'Ugzw1YFzT1example06', 'Stop spreading wrong info', 0, 'negative', '2026-03-19 10:42:55', '2026-03-21 07:15:26'),
+(21, 'XHaKy1gnvQc', 'Ugzw1YFzT1example07', 'This is totally wrong', 1, 'negative', '2026-03-19 10:40:20', '2026-03-21 07:15:26'),
+(22, 'XHaKy1gnvQc', 'Ugzw1YFzT1example08', 'Disappointed', 0, 'negative', '2026-03-19 10:38:00', '2026-03-21 07:15:26'),
+(23, 'XHaKy1gnvQc', 'Ugzw1YFzT1example09', 'Worst explanation ever', 2, 'negative', '2026-03-19 10:35:12', '2026-03-21 07:15:26'),
+(24, 'XHaKy1gnvQc', 'Ugzw1YFzT1example10', 'Okay content', 0, 'neutral', '2026-03-19 10:30:00', '2026-03-21 07:15:26'),
+(25, 'XHaKy1gnvQc', 'Ugzw1YFzT1example11', 'Average explanation', 0, 'neutral', '2026-03-19 10:28:11', '2026-03-21 07:15:26'),
+(26, 'XHaKy1gnvQc', 'Ugzw1YFzT1example12', 'Not bad not good', 0, 'neutral', '2026-03-19 10:26:45', '2026-03-21 07:15:26'),
+(27, 'XHaKy1gnvQc', 'Ugzw1YFzT1example13', 'It is fine', 0, 'neutral', '2026-03-19 10:25:00', '2026-03-21 07:15:26'),
+(28, 'XHaKy1gnvQc', 'Ugzw1YFzT1example14', 'Just okay', 0, 'neutral', '2026-03-19 10:23:19', '2026-03-21 07:15:26'),
+(29, 'XHaKy1gnvQc', 'Ugzw1YFzT1example15', 'Nice explanation', 1, 'positive', '2026-03-19 10:20:00', '2026-03-21 07:15:26'),
+(30, 'XHaKy1gnvQc', 'Ugzw1YFzT1example16', 'Loved it', 2, 'positive', '2026-03-19 10:18:33', '2026-03-21 07:15:26'),
+(31, 'XHaKy1gnvQc', 'Ugzw1YFzT1example17', 'Very informative', 3, 'positive', '2026-03-19 10:16:45', '2026-03-21 07:15:26'),
+(32, 'XHaKy1gnvQc', 'Ugzw1YFzT1example18', 'Great work', 1, 'positive', '2026-03-19 10:15:10', '2026-03-21 07:15:26'),
+(33, 'XHaKy1gnvQc', 'Ugzw1YFzT1example19', 'Keep it up', 0, 'positive', '2026-03-19 10:13:00', '2026-03-21 07:15:26'),
+(34, 'XHaKy1gnvQc', 'Ugzw1YFzT1example20', 'Awesome video', 2, 'positive', '2026-03-19 10:10:00', '2026-03-21 07:15:26'),
+(35, 'XHaKy1gnvQc', 'Ugzw1YFzT1example21', 'Helpful content', 1, 'positive', '2026-03-19 10:08:22', '2026-03-21 07:15:26'),
+(36, 'XHaKy1gnvQc', 'Ugzw1YFzT1example22', 'Very useful', 0, 'positive', '2026-03-19 10:05:00', '2026-03-21 07:15:26');
+
 --
 -- Indexes for dumped tables
 --
@@ -1635,6 +1753,18 @@ ALTER TABLE `region_targets`
   ADD KEY `region_id` (`region_id`);
 
 --
+-- Indexes for table `twitter_data`
+--
+ALTER TABLE `twitter_data`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `youtube_sentiments`
+--
+ALTER TABLE `youtube_sentiments`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -1679,6 +1809,18 @@ ALTER TABLE `regions`
 --
 ALTER TABLE `region_targets`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=145;
+
+--
+-- AUTO_INCREMENT for table `twitter_data`
+--
+ALTER TABLE `twitter_data`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+
+--
+-- AUTO_INCREMENT for table `youtube_sentiments`
+--
+ALTER TABLE `youtube_sentiments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- Constraints for dumped tables
