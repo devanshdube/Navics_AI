@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 23, 2026 at 05:31 AM
+-- Generation Time: Mar 27, 2026 at 04:17 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -1424,158 +1424,181 @@ CREATE TABLE `region_targets` (
   `trade` varchar(100) DEFAULT NULL,
   `target_measure` varchar(100) DEFAULT NULL,
   `month` date DEFAULT NULL,
-  `target_value` bigint(20) DEFAULT NULL
+  `target_value` bigint(20) DEFAULT NULL,
+  `store_name` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `region_targets`
 --
 
-INSERT INTO `region_targets` (`id`, `region_id`, `trade`, `target_measure`, `month`, `target_value`) VALUES
-(1, 1, 'Asia - Europe', 'Container', '2024-01-01', 12600),
-(2, 1, 'Asia - Europe', 'Container', '2024-02-01', 13110),
-(3, 1, 'Asia - Europe', 'Container', '2024-03-01', 15940),
-(4, 1, 'Asia - Europe', 'Container', '2024-04-01', 13600),
-(5, 1, 'Asia - Europe', 'Container', '2024-05-01', 12600),
-(6, 1, 'Asia - Europe', 'Container', '2024-06-01', 13600),
-(7, 1, 'Asia - Europe', 'Container', '2024-07-01', 15800),
-(8, 1, 'Asia - Europe', 'Container', '2024-08-01', 16200),
-(9, 1, 'Asia - Europe', 'Container', '2024-09-01', 16700),
-(10, 1, 'Asia - Europe', 'Container', '2024-10-01', 16400),
-(11, 1, 'Asia - Europe', 'Container', '2024-11-01', 16000),
-(12, 1, 'Asia - Europe', 'Container', '2024-12-01', 14600),
-(13, 1, 'Asia - North America', 'Container', '2024-01-01', 12700),
-(14, 1, 'Asia - North America', 'Container', '2024-02-01', 15230),
-(15, 1, 'Asia - North America', 'Container', '2024-03-01', 15730),
-(16, 1, 'Asia - North America', 'Container', '2024-04-01', 13600),
-(17, 1, 'Asia - North America', 'Container', '2024-05-01', 12400),
-(18, 1, 'Asia - North America', 'Container', '2024-06-01', 14300),
-(19, 1, 'Asia - North America', 'Container', '2024-07-01', 15500),
-(20, 1, 'Asia - North America', 'Container', '2024-08-01', 16000),
-(21, 1, 'Asia - North America', 'Container', '2024-09-01', 16500),
-(22, 1, 'Asia - North America', 'Container', '2024-10-01', 17100),
-(23, 1, 'Asia - North America', 'Container', '2024-11-01', 16200),
-(24, 1, 'Asia - North America', 'Container', '2024-12-01', 14800),
-(25, 2, 'Asia - Europe', 'Container', '2024-01-01', 12800),
-(26, 2, 'Asia - Europe', 'Container', '2024-02-01', 12200),
-(27, 2, 'Asia - Europe', 'Container', '2024-03-01', 13400),
-(28, 2, 'Asia - Europe', 'Container', '2024-04-01', 12100),
-(29, 2, 'Asia - Europe', 'Container', '2024-05-01', 11200),
-(30, 2, 'Asia - Europe', 'Container', '2024-06-01', 12800),
-(31, 2, 'Asia - Europe', 'Container', '2024-07-01', 15400),
-(32, 2, 'Asia - Europe', 'Container', '2024-08-01', 14600),
-(33, 2, 'Asia - Europe', 'Container', '2024-09-01', 15400),
-(34, 2, 'Asia - Europe', 'Container', '2024-10-01', 15600),
-(35, 2, 'Asia - Europe', 'Container', '2024-11-01', 15100),
-(36, 2, 'Asia - Europe', 'Container', '2024-12-01', 13800),
-(37, 3, 'Asia - North America', 'Container', '2024-01-01', 7100),
-(38, 3, 'Asia - North America', 'Container', '2024-02-01', 7400),
-(39, 3, 'Asia - North America', 'Container', '2024-03-01', 7300),
-(40, 3, 'Asia - North America', 'Container', '2024-04-01', 7000),
-(41, 3, 'Asia - North America', 'Container', '2024-05-01', 7300),
-(42, 3, 'Asia - North America', 'Container', '2024-06-01', 7900),
-(43, 3, 'Asia - North America', 'Container', '2024-07-01', 8400),
-(44, 3, 'Asia - North America', 'Container', '2024-08-01', 9400),
-(45, 3, 'Asia - North America', 'Container', '2024-09-01', 9500),
-(46, 3, 'Asia - North America', 'Container', '2024-10-01', 9600),
-(47, 3, 'Asia - North America', 'Container', '2024-11-01', 8900),
-(48, 3, 'Asia - North America', 'Container', '2024-12-01', 8100),
-(49, 1, 'Asia - Europe', 'Revenue per Container', '2024-01-01', 2430),
-(50, 1, 'Asia - Europe', 'Revenue per Container', '2024-02-01', 1780),
-(51, 1, 'Asia - Europe', 'Revenue per Container', '2024-03-01', 1970),
-(52, 1, 'Asia - Europe', 'Revenue per Container', '2024-04-01', 2110),
-(53, 1, 'Asia - Europe', 'Revenue per Container', '2024-05-01', 2340),
-(54, 1, 'Asia - Europe', 'Revenue per Container', '2024-06-01', 2100),
-(55, 1, 'Asia - Europe', 'Revenue per Container', '2024-07-01', 2100),
-(56, 1, 'Asia - Europe', 'Revenue per Container', '2024-08-01', 2100),
-(57, 1, 'Asia - Europe', 'Revenue per Container', '2024-09-01', 1960),
-(58, 1, 'Asia - Europe', 'Revenue per Container', '2024-10-01', 2200),
-(59, 1, 'Asia - Europe', 'Revenue per Container', '2024-11-01', 2180),
-(60, 1, 'Asia - Europe', 'Revenue per Container', '2024-12-01', 2190),
-(61, 1, 'Asia - North America', 'Revenue per Container', '2024-01-01', 2690),
-(62, 1, 'Asia - North America', 'Revenue per Container', '2024-02-01', 1730),
-(63, 1, 'Asia - North America', 'Revenue per Container', '2024-03-01', 2110),
-(64, 1, 'Asia - North America', 'Revenue per Container', '2024-04-01', 2260),
-(65, 1, 'Asia - North America', 'Revenue per Container', '2024-05-01', 2710),
-(66, 1, 'Asia - North America', 'Revenue per Container', '2024-06-01', 2130),
-(67, 1, 'Asia - North America', 'Revenue per Container', '2024-07-01', 2700),
-(68, 1, 'Asia - North America', 'Revenue per Container', '2024-08-01', 2350),
-(69, 1, 'Asia - North America', 'Revenue per Container', '2024-09-01', 2330),
-(70, 1, 'Asia - North America', 'Revenue per Container', '2024-10-01', 2410),
-(71, 1, 'Asia - North America', 'Revenue per Container', '2024-11-01', 2470),
-(72, 1, 'Asia - North America', 'Revenue per Container', '2024-12-01', 2470),
-(73, 2, 'Asia - Europe', 'Revenue per Container', '2024-01-01', 890),
-(74, 2, 'Asia - Europe', 'Revenue per Container', '2024-02-01', 1130),
-(75, 2, 'Asia - Europe', 'Revenue per Container', '2024-03-01', 930),
-(76, 2, 'Asia - Europe', 'Revenue per Container', '2024-04-01', 1110),
-(77, 2, 'Asia - Europe', 'Revenue per Container', '2024-05-01', 1230),
-(78, 2, 'Asia - Europe', 'Revenue per Container', '2024-06-01', 890),
-(79, 2, 'Asia - Europe', 'Revenue per Container', '2024-07-01', 910),
-(80, 2, 'Asia - Europe', 'Revenue per Container', '2024-08-01', 1080),
-(81, 2, 'Asia - Europe', 'Revenue per Container', '2024-09-01', 910),
-(82, 2, 'Asia - Europe', 'Revenue per Container', '2024-10-01', 970),
-(83, 2, 'Asia - Europe', 'Revenue per Container', '2024-11-01', 960),
-(84, 2, 'Asia - Europe', 'Revenue per Container', '2024-12-01', 960),
-(85, 3, 'Asia - North America', 'Revenue per Container', '2024-01-01', 1180),
-(86, 3, 'Asia - North America', 'Revenue per Container', '2024-02-01', 1040),
-(87, 3, 'Asia - North America', 'Revenue per Container', '2024-03-01', 1070),
-(88, 3, 'Asia - North America', 'Revenue per Container', '2024-04-01', 1260),
-(89, 3, 'Asia - North America', 'Revenue per Container', '2024-05-01', 1230),
-(90, 3, 'Asia - North America', 'Revenue per Container', '2024-06-01', 910),
-(91, 3, 'Asia - North America', 'Revenue per Container', '2024-07-01', 1270),
-(92, 3, 'Asia - North America', 'Revenue per Container', '2024-08-01', 1090),
-(93, 3, 'Asia - North America', 'Revenue per Container', '2024-09-01', 960),
-(94, 3, 'Asia - North America', 'Revenue per Container', '2024-10-01', 1060),
-(95, 3, 'Asia - North America', 'Revenue per Container', '2024-11-01', 1110),
-(96, 3, 'Asia - North America', 'Revenue per Container', '2024-12-01', 1120),
-(97, 1, 'Asia - Europe', 'Revenue', '2024-01-01', 30618000),
-(98, 1, 'Asia - Europe', 'Revenue', '2024-02-01', 23335800),
-(99, 1, 'Asia - Europe', 'Revenue', '2024-03-01', 31401800),
-(100, 1, 'Asia - Europe', 'Revenue', '2024-04-01', 28696000),
-(101, 1, 'Asia - Europe', 'Revenue', '2024-05-01', 29484000),
-(102, 1, 'Asia - Europe', 'Revenue', '2024-06-01', 28560000),
-(103, 1, 'Asia - Europe', 'Revenue', '2024-07-01', 33180000),
-(104, 1, 'Asia - Europe', 'Revenue', '2024-08-01', 34020000),
-(105, 1, 'Asia - Europe', 'Revenue', '2024-09-01', 32732000),
-(106, 1, 'Asia - Europe', 'Revenue', '2024-10-01', 36080000),
-(107, 1, 'Asia - Europe', 'Revenue', '2024-11-01', 34880000),
-(108, 1, 'Asia - Europe', 'Revenue', '2024-12-01', 31974000),
-(109, 1, 'Asia - North America', 'Revenue', '2024-01-01', 34163000),
-(110, 1, 'Asia - North America', 'Revenue', '2024-02-01', 26347900),
-(111, 1, 'Asia - North America', 'Revenue', '2024-03-01', 33190300),
-(112, 1, 'Asia - North America', 'Revenue', '2024-04-01', 30736000),
-(113, 1, 'Asia - North America', 'Revenue', '2024-05-01', 33604000),
-(114, 1, 'Asia - North America', 'Revenue', '2024-06-01', 30459000),
-(115, 1, 'Asia - North America', 'Revenue', '2024-07-01', 41850000),
-(116, 1, 'Asia - North America', 'Revenue', '2024-08-01', 37600000),
-(117, 1, 'Asia - North America', 'Revenue', '2024-09-01', 38445000),
-(118, 1, 'Asia - North America', 'Revenue', '2024-10-01', 41211000),
-(119, 1, 'Asia - North America', 'Revenue', '2024-11-01', 40014000),
-(120, 1, 'Asia - North America', 'Revenue', '2024-12-01', 36556000),
-(121, 2, 'Asia - Europe', 'Revenue', '2024-01-01', 11392000),
-(122, 2, 'Asia - Europe', 'Revenue', '2024-02-01', 13786000),
-(123, 2, 'Asia - Europe', 'Revenue', '2024-03-01', 12462000),
-(124, 2, 'Asia - Europe', 'Revenue', '2024-04-01', 13431000),
-(125, 2, 'Asia - Europe', 'Revenue', '2024-05-01', 13776000),
-(126, 2, 'Asia - Europe', 'Revenue', '2024-06-01', 11392000),
-(127, 2, 'Asia - Europe', 'Revenue', '2024-07-01', 14014000),
-(128, 2, 'Asia - Europe', 'Revenue', '2024-08-01', 15768000),
-(129, 2, 'Asia - Europe', 'Revenue', '2024-09-01', 14014000),
-(130, 2, 'Asia - Europe', 'Revenue', '2024-10-01', 15132000),
-(131, 2, 'Asia - Europe', 'Revenue', '2024-11-01', 14496000),
-(132, 2, 'Asia - Europe', 'Revenue', '2024-12-01', 13248000),
-(133, 3, 'Asia - North America', 'Revenue', '2024-01-01', 8378000),
-(134, 3, 'Asia - North America', 'Revenue', '2024-02-01', 7696000),
-(135, 3, 'Asia - North America', 'Revenue', '2024-03-01', 7811000),
-(136, 3, 'Asia - North America', 'Revenue', '2024-04-01', 8820000),
-(137, 3, 'Asia - North America', 'Revenue', '2024-05-01', 8979000),
-(138, 3, 'Asia - North America', 'Revenue', '2024-06-01', 7189000),
-(139, 3, 'Asia - North America', 'Revenue', '2024-07-01', 10668000),
-(140, 3, 'Asia - North America', 'Revenue', '2024-08-01', 10246000),
-(141, 3, 'Asia - North America', 'Revenue', '2024-09-01', 9120000),
-(142, 3, 'Asia - North America', 'Revenue', '2024-10-01', 10176000),
-(143, 3, 'Asia - North America', 'Revenue', '2024-11-01', 9879000),
-(144, 3, 'Asia - North America', 'Revenue', '2024-12-01', 9072000);
+INSERT INTO `region_targets` (`id`, `region_id`, `trade`, `target_measure`, `month`, `target_value`, `store_name`) VALUES
+(1, 1, 'Asia - Europe', 'Container', '2024-01-01', 12600, 'Alpha '),
+(2, 1, 'Asia - Europe', 'Container', '2024-02-01', 13110, 'beta '),
+(3, 1, 'Asia - Europe', 'Container', '2024-03-01', 15940, 'Alpha'),
+(4, 1, 'Asia - Europe', 'Container', '2024-04-01', 13600, 'beta'),
+(5, 1, 'Asia - Europe', 'Container', '2024-05-01', 12600, 'Alpha'),
+(6, 1, 'Asia - Europe', 'Container', '2024-06-01', 13600, 'beta'),
+(7, 1, 'Asia - Europe', 'Container', '2024-07-01', 15800, 'Alpha'),
+(8, 1, 'Asia - Europe', 'Container', '2024-08-01', 16200, 'beta'),
+(9, 1, 'Asia - Europe', 'Container', '2024-09-01', 16700, 'Alpha '),
+(10, 1, 'Asia - Europe', 'Container', '2024-10-01', 16400, 'beta '),
+(11, 1, 'Asia - Europe', 'Container', '2024-11-01', 16000, 'Alpha '),
+(12, 1, 'Asia - Europe', 'Container', '2024-12-01', 14600, 'beta '),
+(13, 1, 'Asia - North America', 'Container', '2024-01-01', 12700, 'Alpha '),
+(14, 1, 'Asia - North America', 'Container', '2024-02-01', 15230, 'beta'),
+(15, 1, 'Asia - North America', 'Container', '2024-03-01', 15730, 'Alpha '),
+(16, 1, 'Asia - North America', 'Container', '2024-04-01', 13600, 'beta '),
+(17, 1, 'Asia - North America', 'Container', '2024-05-01', 12400, 'Alpha '),
+(18, 1, 'Asia - North America', 'Container', '2024-06-01', 14300, 'beta'),
+(19, 1, 'Asia - North America', 'Container', '2024-07-01', 15500, 'Alpha '),
+(20, 1, 'Asia - North America', 'Container', '2024-08-01', 16000, 'beta'),
+(21, 1, 'Asia - North America', 'Container', '2024-09-01', 16500, 'Alpha'),
+(22, 1, 'Asia - North America', 'Container', '2024-10-01', 17100, 'beta '),
+(23, 1, 'Asia - North America', 'Container', '2024-11-01', 16200, 'Alpha'),
+(24, 1, 'Asia - North America', 'Container', '2024-12-01', 14800, 'beta'),
+(25, 2, 'Asia - Europe', 'Container', '2024-01-01', 12800, 'gama'),
+(26, 2, 'Asia - Europe', 'Container', '2024-02-01', 12200, 'gama '),
+(27, 2, 'Asia - Europe', 'Container', '2024-03-01', 13400, 'gama '),
+(28, 2, 'Asia - Europe', 'Container', '2024-04-01', 12100, 'gama '),
+(29, 2, 'Asia - Europe', 'Container', '2024-05-01', 11200, 'gama '),
+(30, 2, 'Asia - Europe', 'Container', '2024-06-01', 12800, 'gama '),
+(31, 2, 'Asia - Europe', 'Container', '2024-07-01', 15400, 'gama '),
+(32, 2, 'Asia - Europe', 'Container', '2024-08-01', 14600, 'gama '),
+(33, 2, 'Asia - Europe', 'Container', '2024-09-01', 15400, 'gama '),
+(34, 2, 'Asia - Europe', 'Container', '2024-10-01', 15600, 'gama '),
+(35, 2, 'Asia - Europe', 'Container', '2024-11-01', 15100, 'gama '),
+(36, 2, 'Asia - Europe', 'Container', '2024-12-01', 13800, 'gama '),
+(37, 3, 'Asia - North America', 'Container', '2024-01-01', 7100, 'delta '),
+(38, 3, 'Asia - North America', 'Container', '2024-02-01', 7400, 'delta '),
+(39, 3, 'Asia - North America', 'Container', '2024-03-01', 7300, 'delta '),
+(40, 3, 'Asia - North America', 'Container', '2024-04-01', 7000, 'delta '),
+(41, 3, 'Asia - North America', 'Container', '2024-05-01', 7300, 'delta '),
+(42, 3, 'Asia - North America', 'Container', '2024-06-01', 7900, 'delta '),
+(43, 3, 'Asia - North America', 'Container', '2024-07-01', 8400, 'delta '),
+(44, 3, 'Asia - North America', 'Container', '2024-08-01', 9400, 'delta '),
+(45, 3, 'Asia - North America', 'Container', '2024-09-01', 9500, 'delta '),
+(46, 3, 'Asia - North America', 'Container', '2024-10-01', 9600, 'delta '),
+(47, 3, 'Asia - North America', 'Container', '2024-11-01', 8900, 'delta '),
+(48, 3, 'Asia - North America', 'Container', '2024-12-01', 8100, 'delta '),
+(49, 1, 'Asia - Europe', 'Revenue per Container', '2024-01-01', 2430, NULL),
+(50, 1, 'Asia - Europe', 'Revenue per Container', '2024-02-01', 1780, NULL),
+(51, 1, 'Asia - Europe', 'Revenue per Container', '2024-03-01', 1970, NULL),
+(52, 1, 'Asia - Europe', 'Revenue per Container', '2024-04-01', 2110, NULL),
+(53, 1, 'Asia - Europe', 'Revenue per Container', '2024-05-01', 2340, NULL),
+(54, 1, 'Asia - Europe', 'Revenue per Container', '2024-06-01', 2100, NULL),
+(55, 1, 'Asia - Europe', 'Revenue per Container', '2024-07-01', 2100, NULL),
+(56, 1, 'Asia - Europe', 'Revenue per Container', '2024-08-01', 2100, NULL),
+(57, 1, 'Asia - Europe', 'Revenue per Container', '2024-09-01', 1960, NULL),
+(58, 1, 'Asia - Europe', 'Revenue per Container', '2024-10-01', 2200, NULL),
+(59, 1, 'Asia - Europe', 'Revenue per Container', '2024-11-01', 2180, NULL),
+(60, 1, 'Asia - Europe', 'Revenue per Container', '2024-12-01', 2190, NULL),
+(61, 1, 'Asia - North America', 'Revenue per Container', '2024-01-01', 2690, NULL),
+(62, 1, 'Asia - North America', 'Revenue per Container', '2024-02-01', 1730, NULL),
+(63, 1, 'Asia - North America', 'Revenue per Container', '2024-03-01', 2110, NULL),
+(64, 1, 'Asia - North America', 'Revenue per Container', '2024-04-01', 2260, NULL),
+(65, 1, 'Asia - North America', 'Revenue per Container', '2024-05-01', 2710, NULL),
+(66, 1, 'Asia - North America', 'Revenue per Container', '2024-06-01', 2130, NULL),
+(67, 1, 'Asia - North America', 'Revenue per Container', '2024-07-01', 2700, NULL),
+(68, 1, 'Asia - North America', 'Revenue per Container', '2024-08-01', 2350, NULL),
+(69, 1, 'Asia - North America', 'Revenue per Container', '2024-09-01', 2330, NULL),
+(70, 1, 'Asia - North America', 'Revenue per Container', '2024-10-01', 2410, NULL),
+(71, 1, 'Asia - North America', 'Revenue per Container', '2024-11-01', 2470, NULL),
+(72, 1, 'Asia - North America', 'Revenue per Container', '2024-12-01', 2470, NULL),
+(73, 2, 'Asia - Europe', 'Revenue per Container', '2024-01-01', 890, NULL),
+(74, 2, 'Asia - Europe', 'Revenue per Container', '2024-02-01', 1130, NULL),
+(75, 2, 'Asia - Europe', 'Revenue per Container', '2024-03-01', 930, NULL),
+(76, 2, 'Asia - Europe', 'Revenue per Container', '2024-04-01', 1110, NULL),
+(77, 2, 'Asia - Europe', 'Revenue per Container', '2024-05-01', 1230, NULL),
+(78, 2, 'Asia - Europe', 'Revenue per Container', '2024-06-01', 890, NULL),
+(79, 2, 'Asia - Europe', 'Revenue per Container', '2024-07-01', 910, NULL),
+(80, 2, 'Asia - Europe', 'Revenue per Container', '2024-08-01', 1080, NULL),
+(81, 2, 'Asia - Europe', 'Revenue per Container', '2024-09-01', 910, NULL),
+(82, 2, 'Asia - Europe', 'Revenue per Container', '2024-10-01', 970, NULL),
+(83, 2, 'Asia - Europe', 'Revenue per Container', '2024-11-01', 960, NULL),
+(84, 2, 'Asia - Europe', 'Revenue per Container', '2024-12-01', 960, NULL),
+(85, 3, 'Asia - North America', 'Revenue per Container', '2024-01-01', 1180, NULL),
+(86, 3, 'Asia - North America', 'Revenue per Container', '2024-02-01', 1040, NULL),
+(87, 3, 'Asia - North America', 'Revenue per Container', '2024-03-01', 1070, NULL),
+(88, 3, 'Asia - North America', 'Revenue per Container', '2024-04-01', 1260, NULL),
+(89, 3, 'Asia - North America', 'Revenue per Container', '2024-05-01', 1230, NULL),
+(90, 3, 'Asia - North America', 'Revenue per Container', '2024-06-01', 910, NULL),
+(91, 3, 'Asia - North America', 'Revenue per Container', '2024-07-01', 1270, NULL),
+(92, 3, 'Asia - North America', 'Revenue per Container', '2024-08-01', 1090, NULL),
+(93, 3, 'Asia - North America', 'Revenue per Container', '2024-09-01', 960, NULL),
+(94, 3, 'Asia - North America', 'Revenue per Container', '2024-10-01', 1060, NULL),
+(95, 3, 'Asia - North America', 'Revenue per Container', '2024-11-01', 1110, NULL),
+(96, 3, 'Asia - North America', 'Revenue per Container', '2024-12-01', 1120, NULL),
+(97, 1, 'Asia - Europe', 'Revenue', '2024-01-01', 30618000, NULL),
+(98, 1, 'Asia - Europe', 'Revenue', '2024-02-01', 23335800, NULL),
+(99, 1, 'Asia - Europe', 'Revenue', '2024-03-01', 31401800, NULL),
+(100, 1, 'Asia - Europe', 'Revenue', '2024-04-01', 28696000, NULL),
+(101, 1, 'Asia - Europe', 'Revenue', '2024-05-01', 29484000, NULL),
+(102, 1, 'Asia - Europe', 'Revenue', '2024-06-01', 28560000, NULL),
+(103, 1, 'Asia - Europe', 'Revenue', '2024-07-01', 33180000, NULL),
+(104, 1, 'Asia - Europe', 'Revenue', '2024-08-01', 34020000, NULL),
+(105, 1, 'Asia - Europe', 'Revenue', '2024-09-01', 32732000, NULL),
+(106, 1, 'Asia - Europe', 'Revenue', '2024-10-01', 36080000, NULL),
+(107, 1, 'Asia - Europe', 'Revenue', '2024-11-01', 34880000, NULL),
+(108, 1, 'Asia - Europe', 'Revenue', '2024-12-01', 31974000, NULL),
+(109, 1, 'Asia - North America', 'Revenue', '2024-01-01', 34163000, NULL),
+(110, 1, 'Asia - North America', 'Revenue', '2024-02-01', 26347900, NULL),
+(111, 1, 'Asia - North America', 'Revenue', '2024-03-01', 33190300, NULL),
+(112, 1, 'Asia - North America', 'Revenue', '2024-04-01', 30736000, NULL),
+(113, 1, 'Asia - North America', 'Revenue', '2024-05-01', 33604000, NULL),
+(114, 1, 'Asia - North America', 'Revenue', '2024-06-01', 30459000, NULL),
+(115, 1, 'Asia - North America', 'Revenue', '2024-07-01', 41850000, NULL),
+(116, 1, 'Asia - North America', 'Revenue', '2024-08-01', 37600000, NULL),
+(117, 1, 'Asia - North America', 'Revenue', '2024-09-01', 38445000, NULL),
+(118, 1, 'Asia - North America', 'Revenue', '2024-10-01', 41211000, NULL),
+(119, 1, 'Asia - North America', 'Revenue', '2024-11-01', 40014000, NULL),
+(120, 1, 'Asia - North America', 'Revenue', '2024-12-01', 36556000, NULL),
+(121, 2, 'Asia - Europe', 'Revenue', '2024-01-01', 11392000, NULL),
+(122, 2, 'Asia - Europe', 'Revenue', '2024-02-01', 13786000, NULL),
+(123, 2, 'Asia - Europe', 'Revenue', '2024-03-01', 12462000, NULL),
+(124, 2, 'Asia - Europe', 'Revenue', '2024-04-01', 13431000, NULL),
+(125, 2, 'Asia - Europe', 'Revenue', '2024-05-01', 13776000, NULL),
+(126, 2, 'Asia - Europe', 'Revenue', '2024-06-01', 11392000, NULL),
+(127, 2, 'Asia - Europe', 'Revenue', '2024-07-01', 14014000, NULL),
+(128, 2, 'Asia - Europe', 'Revenue', '2024-08-01', 15768000, NULL),
+(129, 2, 'Asia - Europe', 'Revenue', '2024-09-01', 14014000, NULL),
+(130, 2, 'Asia - Europe', 'Revenue', '2024-10-01', 15132000, NULL),
+(131, 2, 'Asia - Europe', 'Revenue', '2024-11-01', 14496000, NULL),
+(132, 2, 'Asia - Europe', 'Revenue', '2024-12-01', 13248000, NULL),
+(133, 3, 'Asia - North America', 'Revenue', '2024-01-01', 8378000, NULL),
+(134, 3, 'Asia - North America', 'Revenue', '2024-02-01', 7696000, NULL),
+(135, 3, 'Asia - North America', 'Revenue', '2024-03-01', 7811000, NULL),
+(136, 3, 'Asia - North America', 'Revenue', '2024-04-01', 8820000, NULL),
+(137, 3, 'Asia - North America', 'Revenue', '2024-05-01', 8979000, NULL),
+(138, 3, 'Asia - North America', 'Revenue', '2024-06-01', 7189000, NULL),
+(139, 3, 'Asia - North America', 'Revenue', '2024-07-01', 10668000, NULL),
+(140, 3, 'Asia - North America', 'Revenue', '2024-08-01', 10246000, NULL),
+(141, 3, 'Asia - North America', 'Revenue', '2024-09-01', 9120000, NULL),
+(142, 3, 'Asia - North America', 'Revenue', '2024-10-01', 10176000, NULL),
+(143, 3, 'Asia - North America', 'Revenue', '2024-11-01', 9879000, NULL),
+(144, 3, 'Asia - North America', 'Revenue', '2024-12-01', 9072000, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stores`
+--
+
+CREATE TABLE `stores` (
+  `id` int(11) NOT NULL,
+  `store_name` varchar(50) DEFAULT NULL,
+  `city` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `stores`
+--
+
+INSERT INTO `stores` (`id`, `store_name`, `city`) VALUES
+(1, 'Alpha', 'indore'),
+(2, 'beta', 'delhi'),
+(3, 'gama', 'jabalpur'),
+(4, 'delta', 'bhopal');
 
 -- --------------------------------------------------------
 
@@ -1602,39 +1625,25 @@ CREATE TABLE `twitter_data` (
 --
 
 INSERT INTO `twitter_data` (`id`, `tweet_id`, `content`, `url`, `likes`, `retweet`, `replies`, `quotes`, `views`, `tweet_date`, `created_at`) VALUES
-(1, 'T001', 'Great product launch!', 'https://twitter.com/post1', 1, 0, 0, 0, 10, '2026-02-05 10:00:00', '2026-03-21 17:07:12'),
-(2, 'T002', 'Not satisfied with service', 'https://twitter.com/post2', 0, 0, 0, 0, 2, '2026-02-05 12:00:00', '2026-03-21 17:07:12'),
-(3, 'T003', 'Average experience', 'https://twitter.com/post3', 0, 0, 0, 0, 1, '2026-02-05 14:00:00', '2026-03-21 17:07:12'),
-(4, 'T004', 'Amazing service experience', 'https://twitter.com/post4', 5, 1, 0, 0, 50, '2026-02-06 10:00:00', '2026-03-22 14:46:49'),
-(5, 'T005', 'Very bad support', 'https://twitter.com/post5', 0, 0, 1, 0, 5, '2026-02-06 11:00:00', '2026-03-22 14:46:49'),
-(6, 'T006', 'Loved the features', 'https://twitter.com/post6', 10, 2, 1, 0, 120, '2026-02-06 12:00:00', '2026-03-22 14:46:49'),
-(7, 'T007', 'Could be better', 'https://twitter.com/post7', 2, 0, 0, 0, 20, '2026-02-06 13:00:00', '2026-03-22 14:46:49'),
-(8, 'T008', 'Excellent UI design', 'https://twitter.com/post8', 8, 1, 0, 1, 90, '2026-02-06 14:00:00', '2026-03-22 14:46:49'),
-(9, 'T009', 'App crashes frequently', 'https://twitter.com/post9', 1, 0, 2, 0, 15, '2026-02-06 15:00:00', '2026-03-22 14:46:49'),
-(10, 'T010', 'Fast and reliable', 'https://twitter.com/post10', 12, 3, 1, 1, 150, '2026-02-06 16:00:00', '2026-03-22 14:46:49'),
-(11, 'T011', 'Not user friendly', 'https://twitter.com/post11', 0, 0, 1, 0, 8, '2026-02-06 17:00:00', '2026-03-22 14:46:49'),
-(12, 'T012', 'Great customer care', 'https://twitter.com/post12', 9, 2, 0, 0, 110, '2026-02-06 18:00:00', '2026-03-22 14:46:49'),
-(13, 'T013', 'Average performance', 'https://twitter.com/post13', 3, 0, 0, 0, 30, '2026-02-06 19:00:00', '2026-03-22 14:46:49'),
-(14, 'T014', 'Highly recommended', 'https://twitter.com/post14', 15, 4, 2, 1, 200, '2026-02-06 20:00:00', '2026-03-22 14:46:49'),
-(15, 'T015', 'Waste of money', 'https://twitter.com/post15', 0, 0, 1, 0, 6, '2026-02-07 09:00:00', '2026-03-22 14:46:49'),
-(16, 'T016', 'Good value for price', 'https://twitter.com/post16', 7, 1, 0, 0, 80, '2026-02-07 10:00:00', '2026-03-22 14:46:49'),
-(17, 'T017', 'Facing login issues', 'https://twitter.com/post17', 1, 0, 1, 0, 12, '2026-02-07 11:00:00', '2026-03-22 14:46:49'),
-(18, 'T018', 'Smooth experience', 'https://twitter.com/post18', 11, 2, 1, 0, 130, '2026-02-07 12:00:00', '2026-03-22 14:46:49'),
-(19, 'T019', 'Needs improvement', 'https://twitter.com/post19', 2, 0, 0, 0, 25, '2026-02-07 13:00:00', '2026-03-22 14:46:49'),
-(20, 'T020', 'Fantastic support', 'https://twitter.com/post20', 13, 3, 1, 1, 160, '2026-02-07 14:00:00', '2026-03-22 14:46:49'),
-(21, 'T021', 'Not worth it', 'https://twitter.com/post21', 0, 0, 1, 0, 7, '2026-02-07 15:00:00', '2026-03-22 14:46:49'),
-(22, 'T022', 'Loved using it', 'https://twitter.com/post22', 14, 2, 1, 0, 170, '2026-02-07 16:00:00', '2026-03-22 14:46:49'),
-(23, 'T023', 'Slow loading', 'https://twitter.com/post23', 1, 0, 1, 0, 18, '2026-02-07 17:00:00', '2026-03-22 14:46:49'),
-(24, 'T024', 'Great innovation', 'https://twitter.com/post24', 16, 4, 2, 1, 210, '2026-02-07 18:00:00', '2026-03-22 14:46:49'),
-(25, 'T025', 'Bad UI', 'https://twitter.com/post25', 0, 0, 1, 0, 9, '2026-02-07 19:00:00', '2026-03-22 14:46:49'),
-(26, 'T026', 'Nice performance', 'https://twitter.com/post26', 6, 1, 0, 0, 70, '2026-02-07 20:00:00', '2026-03-22 14:46:49'),
-(27, 'T027', 'Buggy update', 'https://twitter.com/post27', 1, 0, 2, 0, 14, '2026-02-08 09:00:00', '2026-03-22 14:46:49'),
-(28, 'T028', 'Super smooth', 'https://twitter.com/post28', 18, 5, 2, 1, 250, '2026-02-08 10:00:00', '2026-03-22 14:46:49'),
-(29, 'T029', 'Okay experience', 'https://twitter.com/post29', 3, 0, 0, 0, 35, '2026-02-08 11:00:00', '2026-03-22 14:46:49'),
-(30, 'T030', 'Loved it overall', 'https://twitter.com/post30', 20, 6, 3, 2, 300, '2026-02-08 12:00:00', '2026-03-22 14:46:49'),
-(31, 'T031', 'Needs bug fixes', 'https://twitter.com/post31', 2, 0, 1, 0, 22, '2026-02-08 13:00:00', '2026-03-22 14:46:49'),
-(32, 'T032', 'Very efficient', 'https://twitter.com/post32', 17, 3, 1, 1, 220, '2026-02-08 14:00:00', '2026-03-22 14:46:49'),
-(33, 'T033', 'Terrible experience', 'https://twitter.com/post33', 0, 0, 2, 0, 10, '2026-02-08 15:00:00', '2026-03-22 14:46:49');
+(1, '2030919719440760000', 'This AI Agent does full-stack SEO ?? Built in n8n: Analyzes GA4 +Rank +SERP Crawls + Cleans FAQ Tracks Competitor Keywords Auto-rewrites articles Saves reports & performance', 'https://x.com/tec_marco10/status/2030919719440765070', 130, 57, 95, 1, 6318, '2026-03-09 08:12:00', '2026-03-23 14:37:58'),
+(2, '2031427845747260000', '99% of the AI agent tutorials on YouTube are garbage. I have built 47 agents with n8n and Claude. Here are the 3 prompts that actually work', 'https://x.com/tec_marco10/status/2031427845747261793', 485, 92, 453, 1, 0, '2026-03-10 17:51:00', '2026-03-23 14:37:58'),
+(3, '2026170099858890000', 'AI agent tutorials discussion with prompts and workflow', 'https://x.com/yenneferhome/status/2026170099858895102', 39, 16, 38, 0, 730, '2026-02-24 05:39:00', '2026-03-23 14:37:58'),
+(4, '2033382395681120000', 'AI tutorials and prompts explanation with engagement', 'https://x.com/salmakhatunn/status/2033382395681120743', 24, 7, 40, 0, 2613, '2026-03-16 03:18:00', '2026-03-23 14:37:58'),
+(5, '2034403461945860000', 'AI tutorials repeated content for engagement testing', 'https://x.com/WhitmanXAI/status/2034403461945864339', 75, 31, 58, 0, 1535, '2026-03-18 22:55:00', '2026-03-23 14:37:58'),
+(6, '2034937174358200000', 'AI Agent that automates TikTok, video creation and posting', 'https://x.com/maria_wats8492/status/2034937174358204790', 230, 105, 128, 0, 13274, '2026-03-20 10:16:00', '2026-03-23 14:37:58'),
+(7, '1939381736531770000', 'AI Sales Agent automation replacing manual sales process', 'https://x.com/aryanXmahajan/status/1939381736531775516', 879, 360, 627, 8, 109007, '2025-06-29 17:53:00', '2026-03-23 14:37:58'),
+(8, '2035700494526770000', 'Automation agent for TikTok and social media content', 'https://x.com/maria_wats8492/status/2035700494526771381', 181, 61, 80, 2, 11569, '2026-03-22 12:49:00', '2026-03-23 14:37:58'),
+(9, '2034455251840110000', 'AI prompt and tutorial content for agents', 'https://x.com/IrishLyra/status/2034455251840118837', 46, 26, 30, 0, 429, '2026-03-19 02:21:00', '2026-03-23 14:37:58'),
+(10, '1944116339225890000', 'LinkedIn AI agent for viral content analysis', 'https://x.com/mikefutia/status/1944116339225899163', 609, 217, 363, 4, 63678, '2025-07-12 19:27:00', '2026-03-23 14:37:58'),
+(11, '1955603342744330000', 'AI sales intelligence automation for lead generation', 'https://x.com/samruddhi_mokal/status/1955603342744338916', 592, 212, 330, 4, 53309, '2025-08-13 12:12:00', '2026-03-23 14:37:58'),
+(12, '2018501790036360000', 'AI content automation agent for multi-platform posting', 'https://x.com/Nishan_011/status/2018501790036361714', 500, 195, 367, 3, 40028, '2026-02-03 01:48:00', '2026-03-23 14:37:58'),
+(13, '1942261219001260000', 'Facebook ads AI automation agent', 'https://x.com/mikefutia/status/1942261219001262237', 562, 269, 500, 2, 53940, '2025-07-07 16:35:00', '2026-03-23 14:37:58'),
+(14, '1933569702669760000', 'AI agent for Twitter growth automation', 'https://x.com/mikefutia/status/1933569702669766960', 469, 195, 320, 3, 42426, '2025-06-13 16:58:00', '2026-03-23 14:37:58'),
+(15, '2025007264638400000', 'Instagram reels AI analysis automation', 'https://x.com/TechWith_Nova/status/2025007264638402763', 55, 23, 39, 0, 2107, '2026-02-21 00:38:00', '2026-03-23 14:37:58'),
+(16, '2033051444635680000', 'SEO AI agent workflow automation', 'https://x.com/tec_safwan/status/2033051444635689231', 418, 138, 250, 1, 33792, '2026-03-15 05:23:00', '2026-03-23 14:37:58'),
+(17, '1961401810905960000', 'Sales automation agent for lead intelligence', 'https://x.com/samruddhi_mokal/status/1961401810905960576', 364, 138, 193, 0, 26443, '2025-08-29 12:13:00', '2026-03-23 14:37:58'),
+(18, '2008837550388240000', 'Full stack SEO AI automation workflow', 'https://x.com/SimslearnAi/status/2008837550388240713', 744, 259, 452, 6, 49103, '2026-01-07 09:46:00', '2026-03-23 14:37:58'),
+(19, '2009030492558180000', 'AI competitor ads tracking automation', 'https://x.com/mikefutia/status/2009030492558184567', 401, 27, 264, 1, 26958, '2026-01-07 22:32:00', '2026-03-23 14:37:58');
 
 -- --------------------------------------------------------
 
@@ -1693,7 +1702,27 @@ INSERT INTO `youtube_sentiments` (`id`, `video_id`, `comment_id`, `comment`, `li
 (33, 'XHaKy1gnvQc', 'Ugzw1YFzT1example19', 'Keep it up', 0, 'positive', '2026-03-19 10:13:00', '2026-03-21 07:15:26'),
 (34, 'XHaKy1gnvQc', 'Ugzw1YFzT1example20', 'Awesome video', 2, 'positive', '2026-03-19 10:10:00', '2026-03-21 07:15:26'),
 (35, 'XHaKy1gnvQc', 'Ugzw1YFzT1example21', 'Helpful content', 1, 'positive', '2026-03-19 10:08:22', '2026-03-21 07:15:26'),
-(36, 'XHaKy1gnvQc', 'Ugzw1YFzT1example22', 'Very useful', 0, 'positive', '2026-03-19 10:05:00', '2026-03-21 07:15:26');
+(36, 'XHaKy1gnvQc', 'Ugzw1YFzT1example22', 'Very useful', 0, 'positive', '2026-03-19 10:05:00', '2026-03-21 07:15:26'),
+(37, 'gIJ-OCGRdhg', 'UgxsKzCjy3Ze5RwqzON4AaABAg', '?? Marwar', 0, 'positive', '2026-03-19 10:09:02', '2026-03-23 16:11:51'),
+(38, 'gIJ-OCGRdhg', 'UgxoobRZXZPjoLcVGsGN4AaABAg', '?? location', 0, 'positive', '2026-03-19 10:07:22', '2026-03-23 16:11:51'),
+(39, 'gIJ-OCGRdhg', 'UgwQAfjQ_ri6XPs0Fh4AaABAg', 'Jai Hind', 0, 'positive', '2026-03-19 09:27:51', '2026-03-23 16:11:51'),
+(40, 'gIJ-OCGRdhg', 'Ugw7FHR1okO4xaog_iR4AaABAg', '??', 0, 'positive', '2026-03-19 08:25:58', '2026-03-23 16:11:51'),
+(41, 'gIJ-OCGRdhg', 'Ugw7yy0E8vw4WpIxYTh4AaABAg', 'Bhai bus di', 0, 'positive', '2026-03-19 06:27:42', '2026-03-23 16:11:51'),
+(42, 'gIJ-OCGRdhg', 'UgyCdTGqiEtFwXy5uSF4AaABAg', 'Hyderabad', 0, 'positive', '2026-03-19 06:14:18', '2026-03-23 16:11:51'),
+(43, 'gIJ-OCGRdhg', 'UgxIDKkhvPfMN6LL894AaABAg', 'Join the', 4011, 'neutral', '2026-03-07 22:18:29', '2026-03-23 16:11:51'),
+(44, 'gIJ-OCGRdhg', 'UgyTmv4g7-U86kIzBFj4AaABAg', 'Bro make', 0, 'neutral', '2026-03-19 10:21:16', '2026-03-23 16:11:51'),
+(45, 'gIJ-OCGRdhg', 'Ugy5DNrQUD8ffzz54rt4AaABAg', 'Why he did', 2, 'neutral', '2026-03-19 08:45:39', '2026-03-23 16:11:51'),
+(46, 'gIJ-OCGRdhg', 'UgxCJONvhYeDFJZi7I94AaABAg', 'Half inform', 0, 'neutral', '2026-03-19 08:35:58', '2026-03-23 16:11:51'),
+(47, 'gIJ-OCGRdhg', 'Ugx3-oH_dxNp3m_a_Ox4AaABAg', 'Epstein file', 0, 'neutral', '2026-03-19 08:14:50', '2026-03-23 16:11:51'),
+(48, 'gIJ-OCGRdhg', 'Ugz8gD_gSpG4PXA-2dN4AaABAg', 'He is just', 0, 'negative', '2026-03-19 11:01:37', '2026-03-23 16:11:51'),
+(49, 'gIJ-OCGRdhg', 'UgwrlrKpCkv6Bf2pR4V4AaABAg', '?? phone', 0, 'negative', '2026-03-19 10:06:11', '2026-03-23 16:11:51'),
+(50, 'gIJ-OCGRdhg', 'Ugyo7seJpsVrZhYXxo54AaABAg', 'Yah Modi', 0, 'negative', '2026-03-19 09:14:25', '2026-03-23 16:11:51'),
+(51, 'gIJ-OCGRdhg', 'Ugw146w0IGFLQ7QdoXh4AaABAg', 'Accha to', 0, 'negative', '2026-03-19 08:02:31', '2026-03-23 16:11:51'),
+(52, 'gIJ-OCGRdhg', 'UgwYktWA9BlbpnP8bjB4AaABAg', 'The hypoc', 1, 'negative', '2026-03-19 07:55:48', '2026-03-23 16:11:51'),
+(53, 'gIJ-OCGRdhg', 'UgwysO4sp_kvP7AX3W14AaABAg', 'Modi ji ko', 1, 'negative', '2026-03-19 07:52:22', '2026-03-23 16:11:51'),
+(54, 'gIJ-OCGRdhg', 'UgxKtDB9PI-LX1pleYR4AaABAg', '????? ????', 0, 'negative', '2026-03-19 07:28:52', '2026-03-23 16:11:51'),
+(55, 'gIJ-OCGRdhg', 'UgyuKH6ECiTpYzGNczV4AaABAg', 'Iran not', 1, 'negative', '2026-03-19 07:08:37', '2026-03-23 16:11:51'),
+(56, 'gIJ-OCGRdhg', 'UgxnLGIfn1tWEcu-Sd4AaABAg', 'chatna bar', 0, 'negative', '2026-03-19 06:32:17', '2026-03-23 16:11:51');
 
 --
 -- Indexes for dumped tables
@@ -1751,6 +1780,12 @@ ALTER TABLE `regions`
 ALTER TABLE `region_targets`
   ADD PRIMARY KEY (`id`),
   ADD KEY `region_id` (`region_id`);
+
+--
+-- Indexes for table `stores`
+--
+ALTER TABLE `stores`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `twitter_data`
@@ -1811,16 +1846,22 @@ ALTER TABLE `region_targets`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=145;
 
 --
+-- AUTO_INCREMENT for table `stores`
+--
+ALTER TABLE `stores`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `twitter_data`
 --
 ALTER TABLE `twitter_data`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `youtube_sentiments`
 --
 ALTER TABLE `youtube_sentiments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- Constraints for dumped tables

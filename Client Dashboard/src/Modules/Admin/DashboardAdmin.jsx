@@ -18,6 +18,7 @@ import DashboardAnalytics from "./Content/DashboardAnalytics";
 import CompanyList from "./Content/CompanyList";
 import YoutubeAnalytics from "./Content/YoutubeAnalytics";
 import DashboardTwitter from "./Content/DashboardTwitter";
+import SocialMedia from "./Content/SocialMedia";
 
 export default function DashboardAdmin() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -27,6 +28,9 @@ export default function DashboardAdmin() {
   const [chatOpen, setChatOpen] = useState(false);
   const [chatMode, setChatMode] = useState("panel");
   const [formOpen, setFormOpen] = useState(false);
+  // twitter-chat.html chatbot state
+  const [twitterChatOpen, setTwitterChatOpen] = useState(false);
+
   // n8n chatbot state start
   const [chatInput, setChatInput] = useState("");
   const [messages, setMessages] = useState([]);
@@ -50,9 +54,10 @@ export default function DashboardAdmin() {
     { id: "dashboard", label: "Dashboard", icon: Home },
     { id: "companyRegister", label: "Add Company", icon: Building2 },
     { id: "charts", label: "Charts", icon: Users },
-    { id: "youcharts", label: "YouTube Charts", icon: Users },
-    { id: "xcharts", label: "Twitter Charts", icon: Users },
+    // { id: "youcharts", label: "YouTube Charts", icon: Users },
+    // { id: "xcharts", label: "Twitter Charts", icon: Users },
     { id: "users", label: "User List", icon: Users },
+    { id: "social", label: "Social Media", icon: Users },
   ];
 
   const renderContent = () => {
@@ -63,12 +68,14 @@ export default function DashboardAdmin() {
         return <CompanyRegister />;
       case "charts":
         return <DashboardAnalytics />;
-      case "youcharts":
-        return <YoutubeAnalytics />;
-      case "xcharts":
-        return <DashboardTwitter />;
+      // case "youcharts":
+      //   return <YoutubeAnalytics />;
+      // case "xcharts":
+      //   return <DashboardTwitter />;
       case "users":
         return <CompanyList />;
+      case "social":
+        return <SocialMedia />;
       default:
         return <DashboardContent />;
     }
@@ -327,6 +334,28 @@ export default function DashboardAdmin() {
             />
           </div>
         )}
+        {/* twitter-chat.html (Full Screen) */}
+        {twitterChatOpen && (
+          <div className="absolute top-0 left-0 w-full h-full bg-white z-40">
+            <div className="flex items-center justify-between p-4 border-b">
+              <h3 className="font-semibold">Twitter AI Chat</h3>
+
+              <button
+                onClick={() => setTwitterChatOpen(false)}
+                className="text-red-500 font-bold text-lg"
+              >
+                ✕
+              </button>
+            </div>
+
+            <iframe
+              src="/twitter-chat.html"
+              className="w-full h-[calc(100%-64px)] border-none"
+              title="Twitter Chat"
+            />
+          </div>
+        )}
+
         {/* Chatbot Panel */}
         {chatOpen && (
           <div
@@ -441,6 +470,19 @@ export default function DashboardAdmin() {
           className="w-14 h-14 rounded-full bg-[#fe634e] text-white flex items-center justify-center shadow-lg hover:scale-110 transition"
         >
           💬
+        </button>
+      </div>
+      {/* Floating twitter-chat.html Chatbot Icon */}
+      <div className="fixed right-6 top-[69%] -translate-y-1/2 z-40">
+        <button
+          onClick={() => {
+            setFormOpen(false);
+            setChatOpen(false);
+            setTwitterChatOpen(true);
+          }}
+          className="w-14 h-14 rounded-full bg-blue-500 text-white flex items-center justify-center shadow-lg hover:scale-110 transition"
+        >
+          🤖
         </button>
       </div>
       {/* <div className="fixed right-6 top-1/2 -translate-y-1/2 z-40">

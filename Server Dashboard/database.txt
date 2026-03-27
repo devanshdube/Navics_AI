@@ -110,3 +110,9 @@ CREATE TABLE twitter_data (
     tweet_date DATETIME,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE stores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    store_name VARCHAR(50),
+    city VARCHAR(50)
+);

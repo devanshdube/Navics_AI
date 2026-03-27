@@ -257,6 +257,104 @@ const getGeoByCountry = async (req, res) => {
   }
 };
 
+const getGeoByCity = async (req, res) => {
+  try {
+    let query = `
+      SELECT 
+        s.city,
+        SUM(rt.target_value) as target
+      FROM region_targets rt
+      JOIN stores s ON rt.store_name = s.store_name
+      WHERE rt.target_measure = 'Container'  -- 🔥 ya 'Revenue'
+      GROUP BY s.city
+    `;
+
+    const rows = await queryAsync(query);
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+const getDashboardStats = async (req, res) => {
+  try {
+    const { country, region, trade, channel } = req.query;
+
+    let condition = "WHERE 1=1";
+
+    if (country) condition += ` AND c.country_name='${country}'`;
+    if (region) condition += ` AND r.region_name='${region}'`;
+    if (trade) condition += ` AND cp.trade='${trade}'`;
+    if (channel) condition += ` AND cp.channel='${channel}'`;
+
+    // 🔹 Total Revenue
+    const revenueQuery = `
+      SELECT SUM(cp.revenue) as totalRevenue
+      FROM country_performance cp
+      JOIN countries c ON cp.country_id = c.id
+      JOIN regions r ON c.region_id = r.id
+      ${condition}
+    `;
+
+    // 🔹 Current & Previous Month Revenue
+    const momQuery = `
+      SELECT 
+        month,
+        SUM(revenue) as revenue
+      FROM country_performance cp
+      JOIN countries c ON cp.country_id = c.id
+      JOIN regions r ON c.region_id = r.id
+      ${condition}
+      GROUP BY month
+      ORDER BY month DESC
+      LIMIT 2
+    `;
+
+    // 🔹 Total Target
+    const targetQuery = `
+      SELECT SUM(rt.target_value) as totalTarget
+      FROM region_targets rt
+      JOIN regions r ON rt.region_id = r.id
+      WHERE rt.target_measure='Revenue'
+    `;
+
+    // 🔹 Top Country
+    const topQuery = `
+      SELECT c.country_name, SUM(cp.revenue) as revenue
+      FROM country_performance cp
+      JOIN countries c ON cp.country_id = c.id
+      JOIN regions r ON c.region_id = r.id
+      ${condition}
+      GROUP BY c.country_name
+      ORDER BY revenue DESC
+      LIMIT 1
+    `;
+
+    const totalRevenue = await queryAsync(revenueQuery);
+    const momData = await queryAsync(momQuery);
+    const totalTarget = await queryAsync(targetQuery);
+    const topCountry = await queryAsync(topQuery);
+
+    // 🔥 MOM calculation
+    let mom = 0;
+    if (momData.length === 2) {
+      const current = momData[0].revenue;
+      const previous = momData[1].revenue;
+      mom = ((current - previous) / previous) * 100;
+    }
+
+    res.json({
+      totalRevenue: totalRevenue[0]?.totalRevenue || 0,
+      totalTarget: totalTarget[0]?.totalTarget || 0,
+      mom: mom.toFixed(2),
+      top: topCountry[0]?.country_name || "-"
+    });
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 // Youtube Sentiment
 
 const stats = async (req, res) => {
@@ -421,6 +519,101 @@ const comments = async (req, res) => {
   }
 };
 
+// const sentimentChartByVideo = async (req, res) => {
+//   try {
+//     const { videoId } = req.query;
+
+//     if (!videoId) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "videoId is required"
+//       });
+//     }
+
+//     const query = `
+//       SELECT 
+//         sentiment,
+//         COUNT(*) as count
+//       FROM youtube_sentiments
+//       WHERE video_id = ?
+//       GROUP BY sentiment
+//     `;
+
+//     db.query(query, [videoId], (err, result) => {
+//       if (err) {
+//         return res.status(500).json({ success: false, error: err });
+//       }
+
+//       // Ensure all sentiments exist (important for chart)
+//       const formatted = {
+//         positive: 0,
+//         negative: 0,
+//         neutral: 0
+//       };
+
+//       result.forEach(item => {
+//         formatted[item.sentiment] = item.count;
+//       });
+
+//       return res.json({
+//         success: true,
+//         data: formatted
+//       });
+//     });
+
+//   } catch (error) {
+//     res.status(500).json({ success: false, error });
+//   }
+// };
+
+const sentimentByVideo = async (req, res) => {
+  try {
+    const { startDate, endDate } = req.query;
+
+    let condition = "WHERE 1=1";
+    let values = [];
+
+    // Date filter (safe)
+    if (startDate && endDate) {
+      condition += " AND DATE(published_date) BETWEEN ? AND ?";
+      values.push(startDate, endDate);
+    }
+
+    const query = `
+      SELECT 
+        video_id,
+        SUM(sentiment='positive') as positive,
+        SUM(sentiment='negative') as negative,
+        SUM(sentiment='neutral') as neutral
+      FROM youtube_sentiments
+      ${condition}
+      GROUP BY video_id
+      ORDER BY video_id ASC
+    `;
+
+    db.query(query, values, (err, result) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).json({
+          success: false,
+          error: err,
+        });
+      }
+
+      return res.json({
+        success: true,
+        data: result,
+      });
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error,
+    });
+  }
+};
+
 // Twitter APIs
 const getSummary = async (req, res) => {
   try {
@@ -508,6 +701,50 @@ const getChart = async (req, res) => {
   }
 };
 
+const getTweetAnalytics = async (req, res) => {
+  try {
+    const { startDate, endDate, search } = req.query;
+
+    let condition = "WHERE 1=1";
+
+    if (startDate && endDate) {
+      condition += ` AND DATE(tweet_date) BETWEEN '${startDate}' AND '${endDate}'`;
+    }
+
+    if (search) {
+      condition += ` AND content LIKE '%${search}%'`;
+    }
+
+    const sql = `
+      SELECT 
+        tweet_id,
+        DATE(tweet_date) as tweet_date,
+        likes,
+        retweet,
+        replies,
+        views
+      FROM twitter_data
+      ${condition}
+      ORDER BY tweet_date ASC
+    `;
+
+    const result = await new Promise((resolve, reject) => {
+      db.query(sql, (err, data) => {
+        if (err) return reject(err);
+        resolve(data);
+      });
+    });
+
+    res.json({
+      success: true,
+      data: result,
+    });
+
+  } catch (error) {
+    res.status(500).json({ success: false, error });
+  }
+};
+
 module.exports = {
   getRevenueByRegion,
   getRevenueByCountry,
@@ -515,13 +752,18 @@ module.exports = {
   getTargetVsRevenueByRegion,
   getGeoTargetByRegion,
   getGeoByCountry,
+  getGeoByCity,
+  getDashboardStats,
   stats,
   chart,
   trend,
   topComments,
   comments,
+  // sentimentChartByVideo,
+  sentimentByVideo,
   getSummary,
   getChart,
+  getTweetAnalytics
 };
 
 // const getRevenueByRegion = async (req, res) => {

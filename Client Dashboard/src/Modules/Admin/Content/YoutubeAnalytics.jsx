@@ -6,6 +6,7 @@ import SentimentBarChart from "./youtubeChart/SentimentBarChart";
 import SentimentPieChart from "./youtubeChart/SentimentPieChart";
 import SentimentTrend from "./youtubeChart/SentimentTrend";
 import TopComments from "./youtubeChart/TopComments";
+import SentimentBarVChart from "./youtubeChart/SentimentBarVChart";
 
 export default function YoutubeAnalytics() {
   const [filters, setFilters] = useState({});
@@ -24,6 +25,7 @@ export default function YoutubeAnalytics() {
         <SentimentBarChart filters={filters} />
         <SentimentPieChart filters={filters} />
         <SentimentTrend filters={filters} />
+        <SentimentBarVChart filters={filters} />
         {/* <TopComments filters={filters} /> */}
       </div>
 

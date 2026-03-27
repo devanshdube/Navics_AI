@@ -6,6 +6,7 @@ import RevenueCountry from "./chart/RevenueCountry";
 import TargetVsRevenue from "./chart/TargetVsRevenue";
 import GeoAnalytics from "./chart/GeoAnalytics";
 import GeoCouAnalytics from "./chart/GeoCouAnalytics";
+import DashboardStats from "./chart/DashboardStats";
 
 export default function DashboardAnalytics() {
   const [filters, setFilters] = useState({});
@@ -14,13 +15,15 @@ export default function DashboardAnalytics() {
     <div className="p-6">
       <Filters filters={filters} setFilters={setFilters} />
 
+      <DashboardStats filters={filters} /> 
+
       <div className="grid grid-cols-2 gap-6">
         <RevenueRegion filters={filters} />
         <RevenueTrend filters={filters} />
         <RevenueCountry filters={filters} />
         <TargetVsRevenue filters={filters} /> 
         <GeoAnalytics filters={filters} /> 
-        <GeoCouAnalytics filters={filters} /> 
+        {/* <GeoCouAnalytics filters={filters} />  */}
       </div>
     </div>
   );

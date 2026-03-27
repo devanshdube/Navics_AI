@@ -25,6 +25,11 @@ const {
   getChart,
   getGeoTargetByRegion,
   getGeoByCountry,
+  getTweetAnalytics,
+  // sentimentChartByVideo,
+  sentimentByVideo,
+  getGeoByCity,
+  getDashboardStats,
 } = require("../Controller/controllerChart");
 const {
   getAllCompanies,
@@ -58,14 +63,19 @@ router.get("/getRevenueTrend", getRevenueTrend);
 router.get("/getTargetVsRevenueByRegion", getTargetVsRevenueByRegion);
 router.get("/getGeoTargetByRegion", getGeoTargetByRegion);
 router.get("/getGeoByCountry", getGeoByCountry);
+router.get("/getGeoByCity", getGeoByCity);
+router.get("/getDashboardStats", getDashboardStats);
 // Youtube Chart GET
 router.get("/stats", stats);
 router.get("/chart", chart);
 router.get("/trend", trend);
 router.get("/top-comments", topComments);
 router.get("/comments", comments);
+// router.get("/sentimentChartByVideo", sentimentChartByVideo);
+router.get("/sentimentByVideo", sentimentByVideo);
 // Twitter Chart GET
 router.get("/summary", getSummary);
 router.get("/getChart", getChart);
+router.get("/getTweetAnalytics", getTweetAnalytics);
 
 module.exports = router;
