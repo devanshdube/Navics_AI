@@ -614,7 +614,7 @@ const sentimentByVideo = async (req, res) => {
   }
 };
 
-// Twitter APIs
+// ** Twitter APIs **
 const getSummary = async (req, res) => {
   try {
     const { startDate, endDate, search } = req.query;
@@ -745,6 +745,165 @@ const getTweetAnalytics = async (req, res) => {
   }
 };
 
+// **  facebook APIs ** 
+// KPI API
+const getKPI = (req, res) => {
+  const { page } = req.query;
+  let condition = "";
+  let params = [];
+
+  if (page) {
+    condition = `WHERE page_name = ?`;
+    params.push(page);
+  }
+
+  const sql = `
+    SELECT 
+      COUNT(*) as total_posts,
+      SUM(likes) as total_likes,
+      SUM(comments) as total_comments,
+      SUM(shares) as total_shares
+    FROM facebook_data
+    ${condition}
+  `;
+
+  db.query(sql, params, (err, result) => {
+    if (err) return res.status(500).json(err);
+    res.json(result[0]);
+  });
+};
+
+// Top Posts
+const getTopPosts = (req, res) => {
+  const { page, sort = "likes" } = req.query;
+
+  let condition = "";
+  if (page) {
+    condition = `WHERE page_name='${page}'`;
+  }
+
+  const sql = `
+    SELECT postname, likes, comments, shares
+    FROM facebook_data
+    ${condition}
+    ORDER BY ${sort} DESC
+    LIMIT 10
+  `;
+
+  db.query(sql, (err, result) => {
+    if (err) return res.status(500).json(err);
+    res.json(result);
+  });
+};
+
+// Engagement
+const getEngagement = (req, res) => {
+  const { page } = req.query;
+
+  let condition = "";
+  if (page) {
+    condition = `WHERE page_name='${page}'`;
+  }
+
+  const sql = `
+    SELECT 
+      SUM(likes) as likes,
+      SUM(comments) as comments,
+      SUM(shares) as shares
+    FROM facebook_data
+    ${condition}
+  `;
+
+  db.query(sql, (err, result) => {
+    if (err) return res.status(500).json(err);
+
+    const data = result[0];
+
+    res.json([
+      { name: "Likes", value: data.likes },
+      { name: "Comments", value: data.comments },
+      { name: "Shares", value: data.shares }
+    ]);
+  });
+};
+
+// Posts Over Time
+const getPostsOverTime = (req, res) => {
+  const { page } = req.query;
+
+  let condition = "";
+  if (page) {
+    condition = `WHERE page_name='${page}'`;
+  }
+
+  const sql = `
+    SELECT 
+      DATE_FORMAT(posttime, '%Y-%m') as month,
+      COUNT(*) as total_posts
+    FROM facebook_data
+    ${condition}
+    GROUP BY month
+    ORDER BY month
+  `;
+
+  db.query(sql, (err, result) => {
+    if (err) return res.status(500).json(err);
+    res.json(result);
+  });
+};
+
+// Page Comparison
+const getPageComparison = (req, res) => {
+  const sql = `
+    SELECT 
+      page_name,
+      AVG(likes) as avg_likes,
+      AVG(comments) as avg_comments,
+      AVG(shares) as avg_shares
+    FROM facebook_data
+    GROUP BY page_name
+  `;
+
+  db.query(sql, (err, result) => {
+    if (err) return res.status(500).json(err);
+    res.json(result);
+  });
+};
+
+// Search + Filter
+const getPosts = (req, res) => {
+  const { page, search } = req.query;
+
+  let condition = "WHERE 1=1";
+
+  if (page) {
+    condition += ` AND page_name='${page}'`;
+  }
+
+  if (search) {
+    condition += ` AND content LIKE '%${search}%'`;
+  }
+
+  const sql = `
+    SELECT * FROM facebook_data
+    ${condition}
+    ORDER BY posttime DESC
+  `;
+
+  db.query(sql, (err, result) => {
+    if (err) return res.status(500).json(err);
+    res.json(result);
+  });
+};
+
+const getPages = (req, res) => {
+  const sql = `SELECT DISTINCT postname FROM facebook_data`;
+  db.query(sql, (err, result) => {
+    if (err) return res.status(500).json(err);
+    res.json(result);
+  });
+};
+
 module.exports = {
   getRevenueByRegion,
   getRevenueByCountry,
@@ -763,7 +922,14 @@ module.exports = {
   sentimentByVideo,
   getSummary,
   getChart,
-  getTweetAnalytics
+  getTweetAnalytics,
+  getKPI,
+  getTopPosts,
+  getEngagement,
+  getPostsOverTime,
+  getPageComparison,
+  getPosts,
+  getPages
 };
 
 // const getRevenueByRegion = async (req, res) => {

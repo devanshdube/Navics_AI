@@ -30,6 +30,13 @@ const {
   sentimentByVideo,
   getGeoByCity,
   getDashboardStats,
+  getKPI,
+  getTopPosts,
+  getEngagement,
+  getPostsOverTime,
+  getPageComparison,
+  getPosts,
+  getPages,
 } = require("../Controller/controllerChart");
 const {
   getAllCompanies,
@@ -77,5 +84,13 @@ router.get("/sentimentByVideo", sentimentByVideo);
 router.get("/summary", getSummary);
 router.get("/getChart", getChart);
 router.get("/getTweetAnalytics", getTweetAnalytics);
+// Facebook Chart GET
+router.get("/getKPI", getKPI); // -
+router.get("/getTopPosts", getTopPosts); // -
+router.get("/getEngagement", getEngagement); // -
+router.get("/getPostsOverTime", getPostsOverTime); // -
+router.get("/getPageComparison", getPageComparison); // -
+router.get("/getPosts", getPosts);
+router.get("/getPages", getPages);
 
 module.exports = router;

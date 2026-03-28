@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import DashboardAnalytics from "./DashboardAnalytics";
 import DashboardTwitter from "./DashboardTwitter";
 import YoutubeAnalytics from "./YoutubeAnalytics";
+import FacebookDashboard from "./FacebookDashboard";
 
 export default function SocialMedia() {
   const [activeTab, setActiveTab] = useState("facebook");
@@ -17,7 +18,7 @@ export default function SocialMedia() {
   const renderContent = () => {
     switch (activeTab) {
       case "facebook":
-        return <div>📘 Facebook Data</div>;
+        return <FacebookDashboard />;
       case "instagram":
         return <div>📸 Instagram Data</div>;
       case "youtube":

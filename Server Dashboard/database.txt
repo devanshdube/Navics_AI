@@ -116,3 +116,40 @@ CREATE TABLE stores (
     store_name VARCHAR(50),
     city VARCHAR(50)
 );
+
+CREATE TABLE facebook_data (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    postid VARCHAR(100),
+    postname VARCHAR(255),
+    posturl TEXT,
+    posttime DATETIME,
+
+    page_id VARCHAR(100),
+    page_name VARCHAR(150),
+    profileurl TEXT,
+    profilename VARCHAR(150),
+
+    content TEXT,
+
+    likes INT DEFAULT 0,
+    comments INT DEFAULT 0,
+    shares INT DEFAULT 0,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Page filter fast hoga
+CREATE INDEX idx_page_name ON facebook_data(page_name);
+
+-- Date filter / graph ke liye
+CREATE INDEX idx_posttime ON facebook_data(posttime);
+
+-- Sorting ke liye (Top posts)
+CREATE INDEX idx_likes ON facebook_data(likes);
+CREATE INDEX idx_comments ON facebook_data(comments);
+CREATE INDEX idx_shares ON facebook_data(shares);
+
+-- Search (content ya postname)
+CREATE INDEX idx_content ON facebook_data(content(255));
+CREATE INDEX idx_postname ON facebook_data(postname);
