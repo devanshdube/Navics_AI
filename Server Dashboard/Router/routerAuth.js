@@ -37,6 +37,11 @@ const {
   getPageComparison,
   getPosts,
   getPages,
+  getInstaKPIs,
+  getPostTypeBreakdown,
+  getLikesOverTime,
+  getAvgLikesByType,
+  getCommentsTrend,
 } = require("../Controller/controllerChart");
 const {
   getAllCompanies,
@@ -92,5 +97,11 @@ router.get("/getPostsOverTime", getPostsOverTime); // -
 router.get("/getPageComparison", getPageComparison); // -
 router.get("/getPosts", getPosts);
 router.get("/getPages", getPages);
+// Instagram Chart GET
+router.get("/getInstaKPIs", getInstaKPIs);
+router.get("/getLikesOverTime", getLikesOverTime);
+router.get("/getPostTypeBreakdown", getPostTypeBreakdown);
+router.get("/getAvgLikesByType", getAvgLikesByType);
+router.get("/getCommentsTrend", getCommentsTrend);
 
 module.exports = router;

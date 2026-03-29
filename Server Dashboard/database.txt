@@ -153,3 +153,39 @@ CREATE INDEX idx_shares ON facebook_data(shares);
 -- Search (content ya postname)
 CREATE INDEX idx_content ON facebook_data(content(255));
 CREATE INDEX idx_postname ON facebook_data(postname);
+
+CREATE TABLE instagram_posts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    excel_id INT,  -- Excel wali ID
+
+    shortcode VARCHAR(50),
+    url TEXT,
+    caption TEXT,
+
+    likes INT DEFAULT 0,
+    comments INT DEFAULT 0,
+
+    image TEXT,
+
+    username VARCHAR(100),
+    fullname VARCHAR(150),
+    ownerid BIGINT,
+
+    location VARCHAR(255) NULL,
+
+    type VARCHAR(255),
+
+    timestamp VARCHAR(255),
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    -- INDEXES
+    INDEX idx_excel_id (excel_id),
+    INDEX idx_timestamp (timestamp),
+    INDEX idx_type (type),
+    INDEX idx_username (username),
+    INDEX idx_ownerid (ownerid),
+    INDEX idx_likes (likes),
+    INDEX idx_comments (comments)
+);

@@ -3,6 +3,7 @@ import DashboardAnalytics from "./DashboardAnalytics";
 import DashboardTwitter from "./DashboardTwitter";
 import YoutubeAnalytics from "./YoutubeAnalytics";
 import FacebookDashboard from "./FacebookDashboard";
+import DashboardInstagram from "./DashboardInstagram";
 
 export default function SocialMedia() {
   const [activeTab, setActiveTab] = useState("facebook");
@@ -20,7 +21,7 @@ export default function SocialMedia() {
       case "facebook":
         return <FacebookDashboard />;
       case "instagram":
-        return <div>📸 Instagram Data</div>;
+        return <DashboardInstagram />;
       case "youtube":
         return <YoutubeAnalytics />;
       case "twitter":

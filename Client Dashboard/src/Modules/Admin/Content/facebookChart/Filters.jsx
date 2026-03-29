@@ -15,10 +15,10 @@ export default function Filters({ filters, setFilters }) {
 
   return (
     <div className="grid grid-cols-3 gap-4 mb-6">
-      <select name="page" onChange={handleChange} className="border p-2 rounded">
-        {/* <option value="">All Pages</option> */}
+      <select name="page" value={filters.page || ""}  onChange={handleChange} className="border p-2 rounded">
+        <option value="">All Pages</option>
         {pages.map(p => (
-          <option key={p.postname} value={p.postname}>{p.postname}</option>
+          <option key={p.page_name} value={p.page_name}>{p.page_name}</option>
         ))}
       </select>
 

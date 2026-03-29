@@ -5,15 +5,9 @@ import TopPostsChart from "./facebookChart/TopPostsChart";
 import EngagementChart from "./facebookChart/EngagementChart";
 import PostsOverTime from "./facebookChart/PostsOverTime";
 import PageComparison from "./facebookChart/PageComparison";
-// import Filters from "./components/Filters";
-// import KPIStats from "./components/KPIStats";
-// import TopPostsChart from "./components/TopPostsChart";
-// import EngagementChart from "./components/EngagementChart";
-// import PostsOverTime from "./components/PostsOverTime";
-// import PageComparison from "./components/PageComparison";
 
 export default function FacebookDashboard() {
-  const [filters, setFilters] = useState({});
+  const [filters, setFilters] = useState({ page: "", sort: "likes" });
 
   return (
     <div className="p-6">

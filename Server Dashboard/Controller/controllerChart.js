@@ -749,6 +749,7 @@ const getTweetAnalytics = async (req, res) => {
 // KPI API
 const getKPI = (req, res) => {
   const { page } = req.query;
+
   let condition = "";
   let params = [];
 
@@ -776,25 +777,53 @@ const getKPI = (req, res) => {
 // Top Posts
 const getTopPosts = (req, res) => {
   const { page, sort = "likes" } = req.query;
-
+  
+  const allowedSort = ["likes", "comments", "shares"];
+  const sortBy = allowedSort.includes(sort) ? sort : "likes";
+  
   let condition = "";
-  if (page) {
-    condition = `WHERE page_name='${page}'`;
+  let params = [];
+
+  if (page && page !== "") {
+    condition = `WHERE page_name = ?`;
+    params.push(page);
   }
 
   const sql = `
-    SELECT postname, likes, comments, shares
+    SELECT postid, page_name, LEFT(content, 20) as label, content as fullcontent, likes, comments, shares
     FROM facebook_data
     ${condition}
-    ORDER BY ${sort} DESC
+    ORDER BY ${sortBy} DESC
     LIMIT 10
   `;
 
-  db.query(sql, (err, result) => {
+  db.query(sql, params, (err, result) => {
     if (err) return res.status(500).json(err);
     res.json(result);
   });
 };
+
+// const getTopPosts = (req, res) => {
+//   const { page, sort = "likes" } = req.query;
+
+//   let condition = "";
+//   if (page) {
+//     condition = `WHERE page_name='${page}'`;
+//   }
+
+//   const sql = `
+//     SELECT postname, likes, comments, shares
+//     FROM facebook_data
+//     ${condition}
+//     ORDER BY ${sort} DESC
+//     LIMIT 10
+//   `;
+
+//   db.query(sql, (err, result) => {
+//     if (err) return res.status(500).json(err);
+//     res.json(result);
+//   });
+// };
 
 // Engagement
 const getEngagement = (req, res) => {
@@ -897,11 +926,131 @@ const getPosts = (req, res) => {
 };
 
 const getPages = (req, res) => {
-  const sql = `SELECT DISTINCT postname FROM facebook_data`;
+    const sql = `SELECT DISTINCT page_name FROM facebook_data`; 
   db.query(sql, (err, result) => {
     if (err) return res.status(500).json(err);
     res.json(result);
   });
+};
+
+const getInstaKPIs = async (req, res) => {
+  try {
+    const { startDate, endDate } = req.query;
+
+    let condition = "";
+
+    if (startDate && endDate) {
+      condition = `WHERE STR_TO_DATE(timestamp, '%Y-%m-%d') BETWEEN '${startDate}' AND '${endDate}'`;
+    }
+
+    const query = `
+      SELECT 
+        COUNT(*) as totalPosts,
+        SUM(likes) as totalLikes,
+        SUM(comments) as totalComments,
+        MAX(likes) as topPostLikes,
+        ROUND((SUM(likes + comments) / COUNT(*)), 2) as engagementRate
+      FROM instagram_posts
+      ${condition}
+    `;
+
+    db.query(query, (err, result) => {
+      if (err) throw err;
+      res.json(result[0]);
+    });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getLikesOverTime = async (req, res) => {
+  try {
+    const { startDate, endDate } = req.query;
+
+    let condition = "";
+
+    if (startDate && endDate) {
+      condition = `WHERE STR_TO_DATE(timestamp, '%Y-%m-%d') BETWEEN '${startDate}' AND '${endDate}'`;
+    }
+
+    const query = `
+      SELECT 
+        timestamp,
+        likes,
+        comments,
+        type
+      FROM instagram_posts
+      ${condition}
+      ORDER BY STR_TO_DATE(timestamp, '%Y-%m-%d') ASC
+    `;
+
+    db.query(query, (err, result) => {
+      if (err) throw err;
+      res.json(result);
+    });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getPostTypeBreakdown = async (req, res) => {
+  try {
+    const query = `
+      SELECT type, COUNT(*) as count
+      FROM instagram_posts
+      GROUP BY type
+    `;
+
+    db.query(query, (err, result) => {
+      if (err) throw err;
+      res.json(result);
+    });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getAvgLikesByType = async (req, res) => {
+  try {
+    const query = `
+      SELECT 
+        type,
+        ROUND(AVG(likes)) as avgLikes
+      FROM instagram_posts
+      GROUP BY type
+    `;
+
+    db.query(query, (err, result) => {
+      if (err) throw err;
+      res.json(result);
+    });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getCommentsTrend = async (req, res) => {
+  try {
+    const query = `
+      SELECT 
+        timestamp,
+        comments
+      FROM instagram_posts
+      ORDER BY STR_TO_DATE(timestamp, '%Y-%m-%d') ASC
+    `;
+
+    db.query(query, (err, result) => {
+      if (err) throw err;
+      res.json(result);
+    });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
 module.exports = {
@@ -929,82 +1078,10 @@ module.exports = {
   getPostsOverTime,
   getPageComparison,
   getPosts,
-  getPages
+  getPages,
+  getInstaKPIs,
+  getLikesOverTime,
+  getPostTypeBreakdown,
+  getAvgLikesByType,
+  getCommentsTrend
 };
-
-// const getRevenueByRegion = async (req, res) => {
-//   try {
-//     const query = `
-//     SELECT r.region_name,
-//     SUM(cp.revenue) as revenue
-//     FROM country_performance cp
-//     JOIN countries c ON cp.country_id = c.id
-//     JOIN regions r ON c.region_id = r.id
-//     GROUP BY r.region_name
-//     `;
-
-//     const rows = await queryAsync(query);
-
-//     res.status(200).json(rows);
-//   } catch (error) {
-//     console.log(error);
-
-//     res.status(500).json({
-//       message: "Server Error",
-//       error: error.message,
-//     });
-//   }
-// };
-
-// const getRevenueByCountry = async (req, res) => {
-//   try {
-//     const query = `
-//       SELECT c.country_name,
-//       SUM(cp.revenue) as revenue
-//       FROM country_performance cp
-//       JOIN countries c ON cp.country_id = c.id
-//       GROUP BY c.country_name
-//       ORDER BY revenue DESC
-//     `;
-
-//     const rows = await queryAsync(query);
-
-//     res.status(200).json(rows);
-
-//   } catch (error) {
-
-//     console.error(error);
-
-//     res.status(500).json({
-//       message: "Server Error",
-//       error: error.message,
-//     });
-
-//   }
-// };
-
-// const getRevenueTrend = async (req, res) => {
-//   try {
-
-//     const query = `
-//       SELECT month, channel, SUM(revenue) revenue
-//       FROM country_performance
-//       GROUP BY month, channel
-//       ORDER BY month
-//     `;
-
-//     const rows = await queryAsync(query);
-
-//     res.status(200).json(rows);
-
-//   } catch (error) {
-
-//     console.error(error);
-
-//     res.status(500).json({
-//       message: "Server Error",
-//       error: error.message,
-//     });
-
-//   }
-// };
