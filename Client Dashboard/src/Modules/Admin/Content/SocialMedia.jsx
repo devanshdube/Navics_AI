@@ -13,7 +13,6 @@ export default function SocialMedia() {
     { id: "instagram", label: "Instagram", color: "#C13584" },
     { id: "youtube", label: "YouTube", color: "#FF0000" },
     { id: "twitter", label: "Twitter", color: "#000000" },
-    // { id: "performance", label: "Performance", color: "#FFC107" },
   ];
 
   const renderContent = () => {
@@ -26,26 +25,23 @@ export default function SocialMedia() {
         return <YoutubeAnalytics />;
       case "twitter":
         return <DashboardTwitter />;
-      // case "performance":
-      //   return <DashboardAnalytics />;
       default:
         return <div>Select Tab</div>;
     }
   };
 
   return (
-    <div className="w-full h-full bg-gray-100 p-6">
-      
+    <div className="w-full min-h-screen bg-gray-100 p-3 sm:p-4 md:p-6">
+
       {/* Tabs */}
-      <div className="flex gap-4 mb-6">
+      <div className="flex flex-wrap gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-5 md:mb-6">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`px-6 py-3 rounded-xl font-semibold transition-all shadow-md`}
+            className="flex-1 sm:flex-none px-3 py-2 sm:px-4 sm:py-2.5 md:px-6 md:py-3 rounded-xl font-semibold transition-all shadow-md text-sm sm:text-base whitespace-nowrap"
             style={{
-              backgroundColor:
-                activeTab === tab.id ? tab.color : "#e5e7eb",
+              backgroundColor: activeTab === tab.id ? tab.color : "#e5e7eb",
               color: activeTab === tab.id ? "#fff" : "#000",
             }}
           >
@@ -55,7 +51,7 @@ export default function SocialMedia() {
       </div>
 
       {/* Content Area */}
-      <div className="bg-white rounded-xl shadow p-6 min-h-[400px]">
+      <div className="bg-white rounded-xl shadow p-3 sm:p-4 md:p-6 min-h-[300px] sm:min-h-[350px] md:min-h-[400px] w-full overflow-x-auto">
         {renderContent()}
       </div>
     </div>

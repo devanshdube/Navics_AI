@@ -9,19 +9,81 @@ export default function SummaryBoxes({ filters }) {
   }, [filters]);
 
   const fetchData = async () => {
-    const res = await axios.get("http://localhost:5555/auth/navics/auth/summary", {
-      params: filters
-    });
+    const res = await axios.get(
+      "http://localhost:5555/auth/navics/auth/summary",
+      {
+        params: filters,
+      },
+    );
     setData(res.data.data);
   };
 
+  const cards = [
+    {
+      label: "Views",
+      value: data?.total_views,
+      icon: "👁️",
+      border: "border-l-blue-500",
+      bg: "bg-blue-50",
+      text: "text-blue-600",
+    },
+    {
+      label: "Likes",
+      value: data?.total_likes,
+      icon: "❤️",
+      border: "border-l-pink-500",
+      bg: "bg-pink-50",
+      text: "text-pink-600",
+    },
+    {
+      label: "Retweets",
+      value: data?.total_retweet,
+      icon: "🔁",
+      border: "border-l-green-500",
+      bg: "bg-green-50",
+      text: "text-green-600",
+    },
+    {
+      label: "Replies",
+      value: data?.total_replies,
+      icon: "💬",
+      border: "border-l-yellow-500",
+      bg: "bg-yellow-50",
+      text: "text-yellow-600",
+    },
+    {
+      label: "Quotes",
+      value: data?.total_quotes,
+      icon: "📢",
+      border: "border-l-purple-500",
+      bg: "bg-purple-50",
+      text: "text-purple-600",
+    },
+  ];
+
   return (
-    <div className="grid grid-cols-5 gap-4 mb-6">
-      <div className="bg-white p-4 shadow">Views: {data?.total_views}</div>
-      <div className="bg-white p-4 shadow">Likes: {data?.total_likes}</div>
-      <div className="bg-white p-4 shadow">Retweet: {data?.total_retweet}</div>
-      <div className="bg-white p-4 shadow">Replies: {data?.total_replies}</div>
-      <div className="bg-white p-4 shadow">Quotes: {data?.total_quotes}</div>
+    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 mb-4 md:mb-6">
+      {cards.map((card, i) => (
+        <div
+          key={i}
+          className={`bg-white rounded-xl shadow-sm border border-gray-100 border-l-4 ${card.border} p-3 sm:p-4`}
+        >
+          {/* Icon */}
+          <div
+            className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full ${card.bg} flex items-center justify-center text-lg mb-2`}
+          >
+            {card.icon}{" "}
+          </div>
+
+          <p className="text-xs sm:text-sm text-gray-500 font-medium">
+            {card.label}
+          </p>
+
+          <p className={`text-lg sm:text-2xl font-bold mt-1 ${card.text}`}>
+            {card.value ?? "—"}
+          </p>
+        </div>
+      ))}
     </div>
   );
 }

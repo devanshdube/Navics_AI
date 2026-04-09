@@ -13,22 +13,19 @@ export default function DashboardInstagram() {
   });
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 md:p-6 space-y-6">
       {/* Filters */}
       <Filters filters={filters} setFilters={setFilters} />
 
       {/* KPI */}
       <SummaryBoxes filters={filters} />
 
-      {/* Charts */}
-      <div className="grid grid-cols-2 gap-6">
+      {/* Charts - 2x2 grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <LikesChart filters={filters} />
         <PostTypeChart filters={filters} />
         <AvgLikesChart filters={filters} />
-
-        <div className="col-span-2">
-          <CommentsTrendChart filters={filters} />
-        </div>
+        <CommentsTrendChart filters={filters} />
       </div>
     </div>
   );

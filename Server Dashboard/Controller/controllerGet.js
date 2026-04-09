@@ -41,10 +41,64 @@ const getAllCompanies = async (req, res) => {
 
 // controllers/companyController.js
 
+// const getCompanies = async (req, res) => {
+//   try {
+
+//     const query = `
+//       SELECT 
+//         c.id,
+//         c.company_name,
+//         c.total_user_count,
+//         COUNT(u.id) AS available_users,
+//         c.status,
+//         c.created_at
+//       FROM navics_client_company c
+//       LEFT JOIN navics_company_users u
+//         ON u.company_id = c.id
+//         AND u.status = 'active'
+//       GROUP BY c.id
+//       ORDER BY c.id DESC
+//     `;
+
+//     db.query(query, (err, result) => {
+
+//       if (err) {
+//         return res.status(500).json({
+//           status: "Error",
+//           message: err.message
+//         });
+//       }
+
+//       return res.json({
+//         status: "Success",
+//         data: result
+//       });
+
+//     });
+
+//   } catch (error) {
+
+//     return res.status(500).json({
+//       status: "Error",
+//       message: error.message
+//     });
+
+//   }
+// };
+
 const getCompanies = async (req, res) => {
   try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+    const offset = (page - 1) * limit;
+    const search = req.query.search?.trim() || "";
 
-    const query = `
+    const searchCondition = search ? `WHERE c.company_name LIKE ?` : "";
+    const params = search
+      ? [`%${search}%`, limit, offset]
+      : [limit, offset];
+
+    const dataQuery = `
       SELECT 
         c.id,
         c.company_name,
@@ -56,33 +110,43 @@ const getCompanies = async (req, res) => {
       LEFT JOIN navics_company_users u
         ON u.company_id = c.id
         AND u.status = 'active'
+      ${searchCondition}
       GROUP BY c.id
       ORDER BY c.id DESC
+      LIMIT ? OFFSET ?
     `;
 
-    db.query(query, (err, result) => {
+    // Total count for hasMore check
+    const countQuery = `
+      SELECT COUNT(DISTINCT c.id) AS total
+      FROM navics_client_company c
+      ${searchCondition}
+    `;
 
-      if (err) {
-        return res.status(500).json({
-          status: "Error",
-          message: err.message
+    const countParams = search ? [`%${search}%`] : [];
+
+    db.query(countQuery, countParams, (err, countResult) => {
+      if (err) return res.status(500).json({ status: "Error", message: err.message });
+
+      const total = countResult[0].total;
+
+      db.query(dataQuery, params, (err, result) => {
+        if (err) return res.status(500).json({ status: "Error", message: err.message });
+
+        return res.json({
+          status: "Success",
+          data: result,
+          pagination: {
+            page,
+            limit,
+            total,
+            hasMore: offset + result.length < total,
+          },
         });
-      }
-
-      return res.json({
-        status: "Success",
-        data: result
       });
-
     });
-
   } catch (error) {
-
-    return res.status(500).json({
-      status: "Error",
-      message: error.message
-    });
-
+    return res.status(500).json({ status: "Error", message: error.message });
   }
 };
 

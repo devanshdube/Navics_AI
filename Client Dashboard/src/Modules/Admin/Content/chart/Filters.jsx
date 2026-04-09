@@ -6,11 +6,11 @@ export default function Filters({ filters, setFilters }) {
   };
 
   return (
-    <div className="grid grid-cols-6 gap-4 mb-6">
+    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-4 md:mb-6">
       <select
         name="country"
         onChange={handleChange}
-        className="border p-2 rounded"
+        className="border p-2 rounded text-sm w-full"
       >
         <option value="">Country</option>
         <option>China</option>
@@ -30,7 +30,7 @@ export default function Filters({ filters, setFilters }) {
       <select
         name="trade"
         onChange={handleChange}
-        className="border p-2 rounded"
+        className="border p-2 rounded text-sm w-full"
       >
         <option value="">Trade</option>
         <option>Asia - Europe</option>
@@ -40,7 +40,7 @@ export default function Filters({ filters, setFilters }) {
       <select
         name="channel"
         onChange={handleChange}
-        className="border p-2 rounded"
+        className="border p-2 rounded text-sm w-full"
       >
         <option value="">Channel</option>
         <option>Online</option>
@@ -50,7 +50,7 @@ export default function Filters({ filters, setFilters }) {
       <select
         name="region"
         onChange={handleChange}
-        className="border p-2 rounded"
+        className="border p-2 rounded text-sm w-full"
       >
         <option value="">Region</option>
         <option>Asia Pacific Region</option>

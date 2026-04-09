@@ -189,3 +189,32 @@ CREATE TABLE instagram_posts (
     INDEX idx_likes (likes),
     INDEX idx_comments (comments)
 );
+
+CREATE TABLE company_features (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    company_id INT UNSIGNED NOT NULL,
+
+    business_analytics TINYINT(1) DEFAULT 1,
+
+    instagram_enabled TINYINT(1) DEFAULT 1,
+    facebook_enabled TINYINT(1) DEFAULT 1,
+    twitter_enabled TINYINT(1) DEFAULT 1,
+    youtube_enabled TINYINT(1) DEFAULT 1,
+
+    created_at varchar(50),
+    updated_at varchar(50)
+
+    FOREIGN KEY (company_id) REFERENCES navics_client_company(id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS navics_contact(
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(250) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+    created_at VARCHAR(255),
+
+    INDEX idx_email (email),
+    INDEX idx_created_at (created_at)
+);

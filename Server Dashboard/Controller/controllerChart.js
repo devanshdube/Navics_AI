@@ -320,15 +320,15 @@ const getDashboardStats = async (req, res) => {
 
     // 🔹 Top Country
     const topQuery = `
-      SELECT c.country_name, SUM(cp.revenue) as revenue
-      FROM country_performance cp
-      JOIN countries c ON cp.country_id = c.id
-      JOIN regions r ON c.region_id = r.id
-      ${condition}
-      GROUP BY c.country_name
-      ORDER BY revenue DESC
-      LIMIT 1
-    `;
+  SELECT c.country_name, SUM(cp.revenue) as revenue
+  FROM country_performance cp
+  JOIN countries c ON cp.country_id = c.id
+  JOIN regions r ON c.region_id = r.id
+  ${condition}
+  GROUP BY c.country_name
+  ORDER BY revenue DESC
+  LIMIT 5
+`;
 
     const totalRevenue = await queryAsync(revenueQuery);
     const momData = await queryAsync(momQuery);
@@ -347,9 +347,9 @@ const getDashboardStats = async (req, res) => {
       totalRevenue: totalRevenue[0]?.totalRevenue || 0,
       totalTarget: totalTarget[0]?.totalTarget || 0,
       mom: mom.toFixed(2),
-      top: topCountry[0]?.country_name || "-"
+      // top: topCountry[0]?.country_name || "-",
+      topCountries: topCountry || []
     });
-
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -519,53 +519,6 @@ const comments = async (req, res) => {
   }
 };
 
-// const sentimentChartByVideo = async (req, res) => {
-//   try {
-//     const { videoId } = req.query;
-
-//     if (!videoId) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "videoId is required"
-//       });
-//     }
-
-//     const query = `
-//       SELECT 
-//         sentiment,
-//         COUNT(*) as count
-//       FROM youtube_sentiments
-//       WHERE video_id = ?
-//       GROUP BY sentiment
-//     `;
-
-//     db.query(query, [videoId], (err, result) => {
-//       if (err) {
-//         return res.status(500).json({ success: false, error: err });
-//       }
-
-//       // Ensure all sentiments exist (important for chart)
-//       const formatted = {
-//         positive: 0,
-//         negative: 0,
-//         neutral: 0
-//       };
-
-//       result.forEach(item => {
-//         formatted[item.sentiment] = item.count;
-//       });
-
-//       return res.json({
-//         success: true,
-//         data: formatted
-//       });
-//     });
-
-//   } catch (error) {
-//     res.status(500).json({ success: false, error });
-//   }
-// };
-
 const sentimentByVideo = async (req, res) => {
   try {
     const { startDate, endDate } = req.query;
@@ -605,7 +558,6 @@ const sentimentByVideo = async (req, res) => {
         data: result,
       });
     });
-
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -739,13 +691,12 @@ const getTweetAnalytics = async (req, res) => {
       success: true,
       data: result,
     });
-
   } catch (error) {
     res.status(500).json({ success: false, error });
   }
 };
 
-// **  facebook APIs ** 
+// **  facebook APIs **
 // KPI API
 const getKPI = (req, res) => {
   const { page } = req.query;
@@ -777,10 +728,10 @@ const getKPI = (req, res) => {
 // Top Posts
 const getTopPosts = (req, res) => {
   const { page, sort = "likes" } = req.query;
-  
+
   const allowedSort = ["likes", "comments", "shares"];
   const sortBy = allowedSort.includes(sort) ? sort : "likes";
-  
+
   let condition = "";
   let params = [];
 
@@ -802,28 +753,6 @@ const getTopPosts = (req, res) => {
     res.json(result);
   });
 };
-
-// const getTopPosts = (req, res) => {
-//   const { page, sort = "likes" } = req.query;
-
-//   let condition = "";
-//   if (page) {
-//     condition = `WHERE page_name='${page}'`;
-//   }
-
-//   const sql = `
-//     SELECT postname, likes, comments, shares
-//     FROM facebook_data
-//     ${condition}
-//     ORDER BY ${sort} DESC
-//     LIMIT 10
-//   `;
-
-//   db.query(sql, (err, result) => {
-//     if (err) return res.status(500).json(err);
-//     res.json(result);
-//   });
-// };
 
 // Engagement
 const getEngagement = (req, res) => {
@@ -851,7 +780,7 @@ const getEngagement = (req, res) => {
     res.json([
       { name: "Likes", value: data.likes },
       { name: "Comments", value: data.comments },
-      { name: "Shares", value: data.shares }
+      { name: "Shares", value: data.shares },
     ]);
   });
 };
@@ -926,7 +855,7 @@ const getPosts = (req, res) => {
 };
 
 const getPages = (req, res) => {
-    const sql = `SELECT DISTINCT page_name FROM facebook_data`; 
+  const sql = `SELECT DISTINCT page_name FROM facebook_data`;
   db.query(sql, (err, result) => {
     if (err) return res.status(500).json(err);
     res.json(result);
@@ -958,7 +887,6 @@ const getInstaKPIs = async (req, res) => {
       if (err) throw err;
       res.json(result[0]);
     });
-
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -989,7 +917,6 @@ const getLikesOverTime = async (req, res) => {
       if (err) throw err;
       res.json(result);
     });
-
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -1007,7 +934,6 @@ const getPostTypeBreakdown = async (req, res) => {
       if (err) throw err;
       res.json(result);
     });
-
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -1027,7 +953,6 @@ const getAvgLikesByType = async (req, res) => {
       if (err) throw err;
       res.json(result);
     });
-
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -1047,7 +972,6 @@ const getCommentsTrend = async (req, res) => {
       if (err) throw err;
       res.json(result);
     });
-
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -1083,5 +1007,5 @@ module.exports = {
   getLikesOverTime,
   getPostTypeBreakdown,
   getAvgLikesByType,
-  getCommentsTrend
+  getCommentsTrend,
 };
