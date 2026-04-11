@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../Redux/user/userSlice";
+import { persistor } from "../../Redux/store";
 import { useLocation, useNavigate } from "react-router-dom";
 import DashboardContent from "./Content/DashboardContent";
 import CompanyRegister from "./Content/CompanyRegister";
@@ -70,8 +71,10 @@ export default function DashboardAdmin() {
     setIsLoggingOut(true);
 
     setTimeout(() => {
-      dispatch(logout());
       localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      dispatch(logout());
+      persistor.purge();
       navigate("/");
     }, 1200);
   };

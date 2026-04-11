@@ -520,7 +520,7 @@ const handleAuth = async (data, role, password, res) => {
   }
 
   const token = jwt.sign({ id: data.id, role }, process.env.JWT_SECRET, {
-    expiresIn: "1d",
+    expiresIn: "15h",
   });
 
   return res.status(200).json({

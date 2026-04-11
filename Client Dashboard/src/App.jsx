@@ -1,16 +1,42 @@
 // App.jsx
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Suspense } from "react";
-import { useSelector } from "react-redux";
+import { Suspense, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import DashboardAdmin from "./Modules/Admin/DashboardAdmin";
 import DashboardStudent from "./Modules/Student/DashboardStudent";
 import Login from "./Auth/Login";
 import Register from "./Auth/Register";
+import { logout } from "./Redux/user/userSlice";
+import { persistor } from "./Redux/store";
+
+// JWT token decode karo bina library ke (base64)
+function isTokenExpired(token) {
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    // exp Unix timestamp (seconds) hota hai
+    return Date.now() >= payload.exp * 1000;
+  } catch {
+    return true; // Invalid token = expired maano
+  }
+}
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
-  const role = currentUser?.role?.toLowerCase(); // ✅ matches your backend field
+  // App load hone pe token expiry check
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token && isTokenExpired(token)) {
+      // Token expire ho gaya — sab clear karo
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      dispatch(logout());
+      persistor.purge();
+    }
+  }, [dispatch]);
+
+  const role = currentUser?.role?.toLowerCase();
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
@@ -21,20 +47,6 @@ function App() {
             !currentUser ? <Login /> : <Navigate to={`/${role}`} replace />
           }
         />
-        {/* <Route
-          path="/"
-          element={
-            !currentUser ? (
-              <Login />
-            ) : role === "admin" ? (
-              <DashboardAdmin />
-            ) : role === "member" ? (
-              <DashboardStudent />
-            ) : (
-              <Navigate to="/" replace />
-            )
-          }
-        /> */}
         <Route
           path="/register"
           element={

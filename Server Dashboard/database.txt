@@ -218,3 +218,16 @@ CREATE TABLE IF NOT EXISTS navics_contact(
     INDEX idx_email (email),
     INDEX idx_created_at (created_at)
 );
+
+// ************************************************************** //
+
+ALTER TABLE country_performance ADD company_id INT UNSIGNED;
+ALTER TABLE region_targets ADD company_id INT UNSIGNED;
+ALTER TABLE stores ADD company_id INT UNSIGNED;
+
+ALTER TABLE facebook_data ADD company_id INT UNSIGNED;
+ALTER TABLE instagram_posts ADD company_id INT UNSIGNED;
+ALTER TABLE twitter_data ADD company_id INT UNSIGNED;
+ALTER TABLE youtube_sentiments ADD company_id INT UNSIGNED;
+
+// *************************************************************** //

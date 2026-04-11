@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Home, ChevronsLeft, ChevronsRight, ShieldCheck } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../Redux/user/userSlice";
+import { persistor } from "../../Redux/store";
 import { useLocation, useNavigate } from "react-router-dom";
 import DashboardContent from "./Content/DashboardContent";
 
@@ -43,8 +44,10 @@ export default function DashboardStudent() {
     setIsLoggingOut(true);
 
     setTimeout(() => {
-      dispatch(logout());
       localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      dispatch(logout());
+      persistor.purge();
       navigate("/");
     }, 1200); // Fake loading (1.2 sec)
   };

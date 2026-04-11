@@ -1,46 +1,54 @@
 const { db } = require("./../connect");
 const moment = require("moment-timezone");
 
-const getCompanyFeatures = async (req, res) => {
-  try {
-    const { company_id } = req.params;
+const getCompanyFeatures = (req, res) => {
+  const { company_id } = req.params;
 
-    if (!company_id) {
-      return res.status(400).json({
-        status: "fail",
-        message: "company_id required",
-      });
-    }
-
-    const [rows] = await db.promise().query(
-      `SELECT 
-        business_analytics,
-        instagram_enabled,
-        facebook_enabled,
-        twitter_enabled,
-        youtube_enabled
-      FROM company_features
-      WHERE company_id = ?`,
-      [company_id]
-    );
-
-    if (!rows.length) {
-      return res.status(404).json({
-        status: "fail",
-        message: "Features not found",
-      });
-    }
-
-    res.json({
-      status: "success",
-      data: rows[0],
-    });
-  } catch (error) {
-    res.status(500).json({
-      status: "error",
-      message: error.message,
+  if (!company_id) {
+    return res.status(400).json({
+      status: "fail",
+      message: "company_id required",
     });
   }
+
+  db.query(
+    `SELECT 
+      business_analytics,
+      instagram_enabled,
+      facebook_enabled,
+      twitter_enabled,
+      youtube_enabled
+    FROM company_features
+    WHERE company_id = ?`,
+    [company_id],
+    (err, rows) => {
+      if (err) {
+        return res.status(500).json({
+          status: "error",
+          message: err.message,
+        });
+      }
+
+      if (!rows.length) {
+        // No record found, return database column defaults (all ON)
+        return res.json({
+          status: "success",
+          data: {
+            business_analytics: 1,
+            instagram_enabled: 1,
+            facebook_enabled: 1,
+            twitter_enabled: 1,
+            youtube_enabled: 1,
+          },
+        });
+      }
+
+      return res.json({
+        status: "success",
+        data: rows[0],
+      });
+    }
+  );
 };
 
 const updateCompanyFeatures = (req, res) => {
@@ -78,10 +86,36 @@ const updateCompanyFeatures = (req, res) => {
       }
 
       if (!result.length) {
-        return res.status(404).json({
-          status: "fail",
-          message: "Company features not found",
-        });
+        // Record does not exist, insert a new one
+        const createdAt = updatedAt;
+        return db.query(
+          `INSERT INTO company_features 
+           (company_id, business_analytics, instagram_enabled, facebook_enabled, twitter_enabled, youtube_enabled, created_at, updated_at) 
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+          [
+            company_id,
+            business_analytics !== undefined ? business_analytics : 1,
+            instagram_enabled !== undefined ? instagram_enabled : 1,
+            facebook_enabled !== undefined ? facebook_enabled : 1,
+            twitter_enabled !== undefined ? twitter_enabled : 1,
+            youtube_enabled !== undefined ? youtube_enabled : 1,
+            createdAt,
+            updatedAt
+          ],
+          (insertErr) => {
+            if (insertErr) {
+              return res.status(500).json({
+                status: "error",
+                message: insertErr.message,
+              });
+            }
+            return res.json({
+              status: "success",
+              message: "Features created successfully",
+              updated_at: updatedAt,
+            });
+          }
+        );
       }
 
       const fields = [];

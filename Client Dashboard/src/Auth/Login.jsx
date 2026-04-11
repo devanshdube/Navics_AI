@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import bg from "../assets/razorpay-bg-visual-1.3x.avif";
+// import bg from "../assets/razorpay-bg-visual-1.3x.avif";
+import bg from "../assets/bannerIMG.png";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 import { useDispatch } from "react-redux";
 import { setUser } from "../Redux/user/userSlice";
 
@@ -18,100 +19,59 @@ export default function Login() {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError("");
+    e.preventDefault();
+    setError("");
 
-  if (!formData.login || !formData.password) {
-    setError("Email / Mobile and Password are required");
-    return;
-  }
-
-  try {
-    setLoading(true);
-
-    const res = await axios.post(
-      "http://localhost:5555/auth/navics/auth/login",
-      formData
-    );
-
-    console.log("LOGIN RESPONSE 👉", res.data);
-
-    if (res.data.status === "Success") {
-
-      const { user, token, role } = res.data;
-
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
-
-      // dispatch(setUser({ user, token }));
-      dispatch(setUser({ user: { ...user, role }, token }));
-
-      if (role === "admin") {
-        navigate("/admin", { replace: true });
-      } else if (role === "member") {
-        navigate("/member", { replace: true });
-      } else {
-        navigate("/company", { replace: true });
-      }
-
-    } else {
-      setError(res.data.message);
+    if (!formData.login || !formData.password) {
+      setError("Email / Mobile and Password are required");
+      return;
     }
 
-  } catch (err) {
+    try {
+      setLoading(true);
 
-    console.error("LOGIN ERROR 👉", err);
+      const res = await axiosInstance.post(
+        "/auth/navics/auth/login",
+        formData
+      );
 
-    setError(
-      err.response?.data?.message ||
-      "Something went wrong. Please try again."
-    );
+      console.log("LOGIN RESPONSE 👉", res.data);
 
-  } finally {
-    setLoading(false);
-  }
-};
+      if (res.data.status === "Success") {
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setError("");
+        const { user, token, role } = res.data;
 
-  //   if (!formData.login || !formData.password) {
-  //     setError("Email / Mobile and Password are required");
-  //     return;
-  //   }
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user));
 
-  //   try {
-  //     setLoading(true);
-  //     const res = await axios.post(
-  //       "http://localhost:5555/auth/aegis/auth/login",
-  //       formData,
-  //       { headers: { "Content-Type": "application/json" } }
-  //     );
+        // dispatch(setUser({ user, token }));
+        dispatch(setUser({ user: { ...user, role }, token }));
 
-  //     if (res.data.status === "Success") {
-  //       const user = res.data.user;
-  //       const token = res.data.token;
-  //       const role = res.data.role;
+        if (role === "admin") {
+          navigate("/admin", { replace: true });
+        } else if (role === "member") {
+          navigate("/member", { replace: true });
+        } else {
+          navigate("/company", { replace: true });
+        }
 
-  //       localStorage.setItem("token", token);
-  //       localStorage.setItem("user", JSON.stringify(user));
-  //       dispatch(setUser({ user, token }));
+      } else {
+        setError(res.data.message);
+      }
 
-  //       if (role === "admin") {
-  //         navigate("/admin", { replace: true });
-  //       } else {
-  //         navigate("/user", { replace: true });
-  //       }
-  //     }
-  //   } catch (err) {
-  //     console.error("LOGIN ERROR 👉", err);
-  //     setError(err.response?.data?.message || "Something went wrong. Please try again.");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+    } catch (err) {
 
+      console.error("LOGIN ERROR 👉", err);
+
+      setError(
+        err.response?.data?.message ||
+        "Something went wrong. Please try again."
+      );
+
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <>
       <style>{`
@@ -505,7 +465,7 @@ export default function Login() {
             {/* Top brand */}
             <div className="brand-logo">
               <div className="brand-icon">
-                <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" /></svg>
               </div>
               <span className="brand-name">NaviCS<span>AI</span></span>
             </div>
@@ -534,7 +494,7 @@ export default function Login() {
         <div className="login-right">
           <div className="login-card">
             <div className="card-logo">
-              <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" /></svg>
             </div>
 
             <p className="card-welcome">Welcome back</p>
@@ -543,7 +503,7 @@ export default function Login() {
             {error && (
               <div className="error-msg">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                  <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
                 </svg>
                 {error}
               </div>
@@ -561,7 +521,7 @@ export default function Login() {
                     autoComplete="username"
                   />
                   <span className="input-icon">
-                    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
                   </span>
                 </div>
 
@@ -575,7 +535,7 @@ export default function Login() {
                     autoComplete="current-password"
                   />
                   <span className="input-icon">
-                    <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
                   </span>
                 </div>
               </div>
@@ -602,159 +562,3 @@ export default function Login() {
     </>
   );
 }
-
-
-// import React, { useState } from "react";
-// import bg from "../assets/1.jpg";
-// import { Link, useNavigate } from "react-router-dom";
-// import axios from "axios";
-// import { useDispatch } from "react-redux";
-// import { setUser } from "../Redux/user/userSlice";
-
-// export default function Login() {
-//   const navigate = useNavigate();
-//   const dispatch = useDispatch();
-
-//   const [formData, setFormData] = useState({
-//     login: "",
-//     password: "",
-//   });
-
-//   const [loading, setLoading] = useState(false);
-//   const [error, setError] = useState("");
-
-//   const handleChange = (e) => {
-//     setFormData({
-//       ...formData,
-//       [e.target.name]: e.target.value,
-//     });
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setError("");
-
-//     // 🔎 Frontend validation
-//     if (!formData.login || !formData.password) {
-//       setError("Email / Mobile and Password are required");
-//       return;
-//     }
-
-//     try {
-//       setLoading(true);
-
-//       const res = await axios.post(
-//         "http://localhost:5555/auth/aegis/auth/login",
-//         formData,
-//         {
-//           headers: {
-//             "Content-Type": "application/json",
-//           },
-//         }
-//       );
-
-//       if (res.data.status === "Success") {
-//         const user = res.data.user; // ✅ DEFINE user
-//         const token = res.data.token; // ✅ DEFINE token
-//         const role = res.data.role;
-
-//         // Optional storage
-//         localStorage.setItem("token", token);
-//         localStorage.setItem("user", JSON.stringify(user));
-
-//         // ✅ Correct Redux dispatch
-//         dispatch(
-//           setUser({
-//             user: user,
-//             token: token,
-//           })
-//         );
-
-//         // 🔁 Role based navigation
-//         if (role === "admin") {
-//           navigate("/admin", { replace: true });
-//         } else {
-//           navigate("/user", { replace: true });
-//         }
-//       }
-//     } catch (err) {
-//       console.error("LOGIN ERROR 👉", err);
-
-//       setError(
-//         err.response?.data?.message || "Something went wrong. Please try again."
-//       );
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <div className="fixed inset-0 w-screen h-screen overflow-hidden">
-//       {/* Background Image */}
-//       <div
-//         className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
-//         style={{
-//           backgroundImage: `url(${bg})`,
-//           backgroundSize: "cover",
-//         }}
-//       ></div>
-
-//       {/* Dark Overlay */}
-//       <div className="absolute inset-0 w-full h-full bg-black/60"></div>
-
-//       {/* Login Card */}
-//       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 bg-white rounded-xl p-8 w-11/12 max-w-md shadow-2xl">
-//         <h2 className="text-center font-extrabold text-xl font-bold text-[#fe634e] mb-5">
-//           AEGIS I-NET
-//         </h2>
-
-//         <h3 className="text-base font-semibold mb-4">Please sign in</h3>
-//         <form onSubmit={handleSubmit}>
-//           <div className="flex flex-col gap-3">
-//             <input
-//               type="text"
-//               name="login"
-//               placeholder="Email or Mobile"
-//               value={formData.login}
-//               onChange={handleChange}
-//               className="w-full p-2.5 border rounded-lg focus:outline-[#fe634e] text-sm"
-//             />
-
-//             <input
-//               type="password"
-//               name="password"
-//               placeholder="Password"
-//               value={formData.password}
-//               onChange={handleChange}
-//               className="w-full p-2.5 border rounded-lg focus:outline-[#fe634e] text-sm"
-//             />
-
-//             <div className="flex justify-between items-center text-sm">
-//               <label className="flex items-center gap-2">
-//                 <input type="checkbox" />
-//                 Remember me
-//               </label>
-//               <a className="text-[#fe634e] cursor-pointer">Forgot password?</a>
-//             </div>
-
-//             <button
-//               type="submit"
-//               disabled={loading}
-//               className="bg-[#fe634e] hover:bg-[#d3240c] text-white py-2.5 rounded-lg transition"
-//             >
-//               {loading ? "Signing in..." : "Sign in"}
-//             </button>
-//           </div>
-//         </form>
-
-//         <div className="text-center mt-4 text-sm">
-//           New student?{" "}
-//           <span className="text-[#fe634e] cursor-pointer">
-//             <Link to={"/register"}>Create your account</Link>
-//             {/* Create your account */}
-//           </span>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }

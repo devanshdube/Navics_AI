@@ -5,6 +5,8 @@ import InputField from "../../../Components/InputField";
 
 const API_URL = "http://localhost:5555/auth/navics/auth/getCompanies";
 const USER_API = "http://localhost:5555/auth/navics/auth/company-users";
+const FEATURES_API = "http://localhost:5555/auth/navics/companies/getCompanyFeatures";
+const UPDATE_FEATURES_API = "http://localhost:5555/auth/navics/companies/updateCompanyFeatures";
 const LIMIT = 5;
 
 const CompanyList = () => {
@@ -21,6 +23,18 @@ const CompanyList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalLoading, setIsModalLoading] = useState(false);
   const [selectedCompanyName, setSelectedCompanyName] = useState("");
+
+  const [isFeaturesModalOpen, setIsFeaturesModalOpen] = useState(false);
+  const [isFeaturesLoading, setIsFeaturesLoading] = useState(false);
+  const [isFeaturesUpdating, setIsFeaturesUpdating] = useState(false);
+  const [selectedCompanyId, setSelectedCompanyId] = useState(null);
+  const [companyFeatures, setCompanyFeatures] = useState({
+    business_analytics: 0,
+    instagram_enabled: 0,
+    facebook_enabled: 0,
+    twitter_enabled: 0,
+    youtube_enabled: 0
+  });
 
   const scrollContainerRef = useRef(null);
   const observerTarget = useRef(null);
@@ -135,6 +149,46 @@ const CompanyList = () => {
     }
   };
 
+  // ─── Fetch / Update features for Action ────────────────────────────────────
+  const handleAction = async (company) => {
+    try {
+      setIsFeaturesModalOpen(true);
+      setIsFeaturesLoading(true);
+      setSelectedCompanyName(company.company_name);
+      setSelectedCompanyId(company.id);
+      
+      const res = await axios.get(`${FEATURES_API}/${company.id}`);
+      if (res.data && res.data.data) {
+        setCompanyFeatures(res.data.data);
+      }
+    } catch (err) {
+      console.error("Failed to fetch features:", err);
+      // Do not override with default — let the UI stay empty so error is visible
+    } finally {
+      setIsFeaturesLoading(false);
+    }
+  };
+
+  const handleUpdateFeatures = async () => {
+    try {
+      setIsFeaturesUpdating(true);
+      await axios.put(`${UPDATE_FEATURES_API}/${selectedCompanyId}`, companyFeatures);
+      setIsFeaturesModalOpen(false);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to update features");
+    } finally {
+      setIsFeaturesUpdating(false);
+    }
+  };
+
+  const toggleFeature = (featureName) => {
+    setCompanyFeatures((prev) => ({
+      ...prev,
+      [featureName]: prev[featureName] ? 0 : 1
+    }));
+  };
+
   return (
     <div className="bg-white rounded-lg shadow mb-6">
       <div className="p-4 border-b">
@@ -194,6 +248,7 @@ const CompanyList = () => {
               <th className="px-4 py-3 text-left text-xs uppercase">
                 Available Users
               </th>
+              <th className="px-4 py-3 text-left text-xs uppercase">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -208,6 +263,14 @@ const CompanyList = () => {
                   onClick={() => fetchUsers(company)}
                 >
                   {company.available_users}
+                </td>
+                <td className="px-4 py-3">
+                  <button
+                    onClick={() => handleAction(company)}
+                    className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
+                  >
+                    View
+                  </button>
                 </td>
               </tr>
             ))}
@@ -292,6 +355,75 @@ const CompanyList = () => {
                     )}
                   </tbody>
                 </table>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Features Modal */}
+      {isFeaturesModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white w-[90%] max-w-md rounded-lg shadow-lg">
+            <div className="flex justify-between items-center p-4 border-b">
+              <h2 className="text-lg font-semibold">
+                {selectedCompanyName} - Features
+              </h2>
+              <button
+                onClick={() => setIsFeaturesModalOpen(false)}
+                className="text-gray-500 hover:text-red-500"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="p-6">
+              {isFeaturesLoading ? (
+                <div className="flex justify-center py-6 text-gray-500">
+                  Loading features...
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {Object.entries(companyFeatures).map(([key, value]) => (
+                    <div key={key} className="flex items-center justify-between">
+                      <span className="capitalize text-gray-700">
+                        {key.replace(/_/g, " ")}
+                      </span>
+                      <div className="flex items-center gap-3">
+                        <span className={`text-sm font-bold ${value ? 'text-green-600' : 'text-gray-400'}`}>
+                          {value ? "ON" : "OFF"}
+                        </span>
+                        <button
+                          onClick={() => toggleFeature(key)}
+                          className={`w-12 h-6 rounded-full flex items-center transition-colors duration-300 focus:outline-none ${
+                            value ? "bg-green-500" : "bg-gray-300"
+                          }`}
+                        >
+                          <div
+                            className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-300 mx-1 ${
+                              value ? "translate-x-6" : "translate-x-0"
+                            }`}
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                  
+                  <div className="mt-6 flex justify-end gap-3">
+                    <button
+                      onClick={() => setIsFeaturesModalOpen(false)}
+                      className="px-4 py-2 border rounded text-gray-600 hover:bg-gray-50 text-sm"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleUpdateFeatures}
+                      disabled={isFeaturesUpdating}
+                      className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm disabled:opacity-50"
+                    >
+                      {isFeaturesUpdating ? "Saving..." : "Save Changes"}
+                    </button>
+                  </div>
+                </div>
               )}
             </div>
           </div>
