@@ -8,6 +8,7 @@ import {
   BarChart3,
   Share2,
   UserCog,
+  Phone,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../Redux/user/userSlice";
@@ -18,6 +19,7 @@ import CompanyRegister from "./Content/CompanyRegister";
 import DashboardAnalytics from "./Content/DashboardAnalytics";
 import CompanyList from "./Content/CompanyList";
 import SocialMedia from "./Content/SocialMedia";
+import ContactList from "./Content/ContactList";
 
 export default function DashboardAdmin() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -43,9 +45,10 @@ export default function DashboardAdmin() {
   const menuItems = [
     // { id: "dashboard", label: "Dashboard", icon: Home },
     { id: "companyRegister", label: "Add Company", icon: Building2 },
-    { id: "charts", label: "Sales", icon: BarChart3 },
+    // { id: "charts", label: "Sales", icon: BarChart3 },
     { id: "users", label: "User List", icon: UserCog },
-    { id: "social", label: "Social Media", icon: Share2 },
+    // { id: "social", label: "Social Media", icon: Share2 },
+    { id: "contact", label: "Contact", icon: Phone },
   ];
 
   const renderContent = () => {
@@ -54,12 +57,14 @@ export default function DashboardAdmin() {
       //   return <DashboardContent />;
       case "companyRegister":
         return <CompanyRegister />;
-      case "charts":
-        return <DashboardAnalytics />;
+      // case "charts":
+      //   return <DashboardAnalytics />;
       case "users":
         return <CompanyList />;
-      case "social":
-        return <SocialMedia />;
+      // case "social":
+      //   return <SocialMedia />;
+      case "contact":
+        return <ContactList />;
       default:
         return <DashboardContent />;
     }
@@ -89,9 +94,8 @@ export default function DashboardAdmin() {
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
       <div
-        className={`${
-          sidebarOpen ? "w-64" : "w-20"
-        } bg-gradient-to-b from-[#ffffff] to-[#ffffff] text-white transition-all duration-300 ease-in-out flex flex-col`}
+        className={`${sidebarOpen ? "w-64" : "w-20"
+          } bg-gradient-to-b from-[#ffffff] to-[#ffffff] text-white transition-all duration-300 ease-in-out flex flex-col`}
       >
         {/* Sidebar Header */}
         <div
@@ -122,11 +126,10 @@ export default function DashboardAdmin() {
                 <li key={item.id}>
                   <button
                     onClick={() => onMenuClick(item.id)}
-                    className={`w-full flex items-center gap-4 p-3 rounded-lg transition-all ${
-                      activeMenu === item.id
-                        ? "bg-[#fe634e] text-white shadow-lg"
-                        : "hover:bg-[#ffe5e0] text-gray-700"
-                    }`}
+                    className={`w-full flex items-center gap-4 p-3 rounded-lg transition-all ${activeMenu === item.id
+                      ? "bg-[#fe634e] text-white shadow-lg"
+                      : "hover:bg-[#ffe5e0] text-gray-700"
+                      }`}
                   >
                     <Icon size={24} />
                     {sidebarOpen && (
@@ -193,11 +196,10 @@ export default function DashboardAdmin() {
                 onClick={handleLogout}
                 disabled={isLoggingOut}
                 className={`px-4 py-2 rounded-lg transition 
-          ${
-            isLoggingOut
-              ? "bg-gray-600 cursor-not-allowed"
-              : "bg-[#2bc155] hover:bg-[#2bc155]"
-          }`}
+          ${isLoggingOut
+                    ? "bg-gray-600 cursor-not-allowed"
+                    : "bg-[#2bc155] hover:bg-[#2bc155]"
+                  }`}
               >
                 {isLoggingOut ? "Logging out..." : "Yes, Logout"}
               </button>

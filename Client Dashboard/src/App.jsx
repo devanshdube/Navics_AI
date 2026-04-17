@@ -5,9 +5,9 @@ import { useSelector, useDispatch } from "react-redux";
 import DashboardAdmin from "./Modules/Admin/DashboardAdmin";
 import DashboardStudent from "./Modules/Student/DashboardStudent";
 import Login from "./Auth/Login";
-import Register from "./Auth/Register";
 import { logout } from "./Redux/user/userSlice";
 import { persistor } from "./Redux/store";
+import DashboardCompany from "./Modules/Companies/DashboardCompany";
 
 // JWT token decode karo bina library ke (base64)
 function isTokenExpired(token) {
@@ -47,18 +47,21 @@ function App() {
             !currentUser ? <Login /> : <Navigate to={`/${role}`} replace />
           }
         />
-        <Route
+        {/* <Route
           path="/register"
           element={
             !currentUser ? <Register /> : <Navigate to={`/${role}`} replace />
           }
-        />
+        /> */}
 
         {role === "admin" && (
           <Route path="/admin/*" element={<DashboardAdmin />} />
         )}
         {role === "member" && (
           <Route path="/member/*" element={<DashboardStudent />} />
+        )}
+        {role === "company" && (
+          <Route path="/company/*" element={<DashboardCompany />} />
         )}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
@@ -67,18 +70,3 @@ function App() {
 }
 
 export default App;
-
-// import "./App.css";
-// import Login from "./Auth/Login";
-// import Register from "./Auth/Register";
-
-// function App() {
-//   return (
-//     <>
-//       {/* <Login /> */}
-//       <Register />
-//     </>
-//   );
-// }
-
-// export default App;

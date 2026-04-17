@@ -7,6 +7,7 @@ const API_URL = "http://localhost:5555/auth/navics/auth/getCompanies";
 const USER_API = "http://localhost:5555/auth/navics/auth/company-users";
 const FEATURES_API = "http://localhost:5555/auth/navics/companies/getCompanyFeatures";
 const UPDATE_FEATURES_API = "http://localhost:5555/auth/navics/companies/updateCompanyFeatures";
+const TOGGLE_STATUS_API = "http://localhost:5555/auth/navics/companies/toggleCompanyStatus";
 const LIMIT = 5;
 
 const CompanyList = () => {
@@ -156,7 +157,7 @@ const CompanyList = () => {
       setIsFeaturesLoading(true);
       setSelectedCompanyName(company.company_name);
       setSelectedCompanyId(company.id);
-      
+
       const res = await axios.get(`${FEATURES_API}/${company.id}`);
       if (res.data && res.data.data) {
         setCompanyFeatures(res.data.data);
@@ -187,6 +188,21 @@ const CompanyList = () => {
       ...prev,
       [featureName]: prev[featureName] ? 0 : 1
     }));
+  };
+
+  const handleToggleStatus = async (company) => {
+    try {
+      const res = await axios.patch(`${TOGGLE_STATUS_API}/${company.id}`);
+      // Local state update karo — re-fetch ki zaroorat nahi
+      setCompanies((prev) =>
+        prev.map((c) =>
+          c.id === company.id ? { ...c, status: res.data.new_status } : c
+        )
+      );
+    } catch (err) {
+      alert("Failed to toggle company status");
+      console.error(err);
+    }
   };
 
   return (
@@ -270,6 +286,15 @@ const CompanyList = () => {
                     className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
                   >
                     View
+                  </button>
+                  <button
+                    onClick={() => handleToggleStatus(company)}
+                    className={`px-3 py-1 rounded text-white text-sm ${company.status === "active"
+                        ? "bg-red-500 hover:bg-red-600"
+                        : "bg-green-500 hover:bg-green-600"
+                      }`}
+                  >
+                    {company.status === "active" ? "Disable" : "Enable"}
                   </button>
                 </td>
               </tr>
@@ -394,20 +419,18 @@ const CompanyList = () => {
                         </span>
                         <button
                           onClick={() => toggleFeature(key)}
-                          className={`w-12 h-6 rounded-full flex items-center transition-colors duration-300 focus:outline-none ${
-                            value ? "bg-green-500" : "bg-gray-300"
-                          }`}
+                          className={`w-12 h-6 rounded-full flex items-center transition-colors duration-300 focus:outline-none ${value ? "bg-green-500" : "bg-gray-300"
+                            }`}
                         >
                           <div
-                            className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-300 mx-1 ${
-                              value ? "translate-x-6" : "translate-x-0"
-                            }`}
+                            className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-300 mx-1 ${value ? "translate-x-6" : "translate-x-0"
+                              }`}
                           />
                         </button>
                       </div>
                     </div>
                   ))}
-                  
+
                   <div className="mt-6 flex justify-end gap-3">
                     <button
                       onClick={() => setIsFeaturesModalOpen(false)}

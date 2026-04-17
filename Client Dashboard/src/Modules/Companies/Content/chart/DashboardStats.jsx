@@ -1,0 +1,104 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import axiosInstance from "../../../../utils/axiosInstance";
+
+export default function DashboardStats({ filters }) {
+  const [stats, setStats] = useState({});
+
+  const company_id = useSelector((state) => state.user?.currentUser?.company_id);
+
+  useEffect(() => {
+    console.log(company_id);
+    if (!company_id) return;
+    axiosInstance
+      .get(`/auth/navics/companies/charts/getDashboardStats/${company_id}`, {
+        params: filters,
+      })
+      .then((res) => setStats(res.data))
+      .catch(console.error);
+  }, [filters, company_id]);
+
+  const cards = [
+    {
+      label: "Total Revenue",
+      value: `₹ ${(stats.totalRevenue / 1000000 || 0).toFixed(2)}M`,
+      icon: "💰",
+      border: "border-l-green-500",
+      bg: "bg-green-50",
+      text: "text-green-600",
+    },
+    {
+      label: "Total Target",
+      value: `₹ ${(stats.totalTarget / 1000000 || 0).toFixed(2)}M`,
+      icon: "🎯",
+      border: "border-l-blue-500",
+      bg: "bg-blue-50",
+      text: "text-blue-600",
+    },
+    {
+      label: "MOM %",
+      value: `${stats.mom || 0}%`,
+      icon: "📈",
+      border: stats.mom >= 0 ? "border-l-green-500" : "border-l-red-500",
+      bg: stats.mom >= 0 ? "bg-green-50" : "bg-red-50",
+      text: stats.mom >= 0 ? "text-green-600" : "text-red-600",
+    },
+  ];
+
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-4 md:mb-6">
+      {/* Normal Cards */}
+      {cards.map((card, i) => (
+        <div
+          key={i}
+          className={`bg-white rounded-xl shadow-sm border border-gray-100 border-l-4 ${card.border} p-3 sm:p-4 transition hover:shadow-md`}
+        >
+          {/* Icon */}
+          <div
+            className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full ${card.bg} flex items-center justify-center text-lg mb-2`}
+          >
+            {card.icon}
+          </div>
+
+          <p className="text-xs sm:text-sm text-gray-500 font-medium">
+            {card.label}
+          </p>
+
+          <p className={`text-lg sm:text-2xl font-bold mt-1 ${card.text}`}>
+            {card.value}
+          </p>
+        </div>
+      ))}
+
+      {/* Top Analysis Card */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-purple-500 p-3 sm:p-4 transition hover:shadow-md">
+        <div className="flex items-center gap-2 mb-2">
+          <div className="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center">
+            📊
+          </div>
+          <h4 className="text-xs sm:text-sm text-gray-500 font-medium">
+            Top Analysis
+          </h4>
+        </div>
+
+        <div className="space-y-2 mt-2">
+          {(stats.topCountries || []).map((item, index) => {
+            const max = stats.topCountries?.[0]?.revenue || 1;
+            const width = (item.revenue / max) * 100;
+
+            return (
+              <div key={index}>
+                <div
+                  className="h-2 bg-gradient-to-r from-purple-500 to-purple-400 rounded transition-all duration-500 hover:opacity-80"
+                  style={{ width: `${width}%` }}
+                  title={`${item.country_name} - ₹${item.revenue}`}
+                ></div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}

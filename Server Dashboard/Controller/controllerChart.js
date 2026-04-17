@@ -862,6 +862,8 @@ const getPages = (req, res) => {
   });
 };
 
+// **  instagram APIs **
+
 const getInstaKPIs = async (req, res) => {
   try {
     const { startDate, endDate } = req.query;

@@ -174,5 +174,148 @@ const updateCompanyFeatures = (req, res) => {
   );
 };
 
+const accessCompanyFeatures = (req, res) => {
+  const { company_id } = req.params;
 
-module.exports = { getCompanyFeatures, updateCompanyFeatures };
+  if (!company_id) {
+    return res.status(400).json({
+      status: "fail",
+      message: "company_id required",
+    });
+  }
+
+  db.query(
+    `SELECT 
+      business_analytics,
+      instagram_enabled,
+      facebook_enabled,
+      twitter_enabled,
+      youtube_enabled
+    FROM company_features
+    WHERE company_id = ?`,
+    [company_id],
+    (err, rows) => {
+      if (err) {
+        return res.status(500).json({
+          status: "error",
+          message: err.message,
+        });
+      }
+
+      const data = rows[0] || {
+        business_analytics: 1,
+        instagram_enabled: 1,
+        facebook_enabled: 1,
+        twitter_enabled: 1,
+        youtube_enabled: 1,
+      };
+
+      // 🔥 Important: also send enabled_features array
+      const enabled_features = [];
+
+      if (data.business_analytics) enabled_features.push("analytics");
+      if (data.facebook_enabled) enabled_features.push("facebook");
+      if (data.instagram_enabled) enabled_features.push("instagram");
+      if (data.youtube_enabled) enabled_features.push("youtube");
+      if (data.twitter_enabled) enabled_features.push("twitter");
+
+      return res.json({
+        status: "success",
+        data,
+        enabled_features,
+      });
+    }
+  );
+};
+
+// ─── navics_contact: paginated list with search ───────────────────────────────
+const getContacts = (req, res) => {
+  let { page = 1, limit = 10, search = "" } = req.query;
+
+  page = parseInt(page, 10);
+  limit = parseInt(limit, 10);
+
+  if (isNaN(page) || page < 1) page = 1;
+  if (isNaN(limit) || limit < 1) limit = 10;
+
+  const offset = (page - 1) * limit;
+  const searchVal = `%${search.trim()}%`;
+
+  // Total count
+  db.query(
+    `SELECT COUNT(*) AS total FROM navics_contact
+     WHERE name LIKE ? OR email LIKE ? OR message LIKE ?`,
+    [searchVal, searchVal, searchVal],
+    (countErr, countRows) => {
+      if (countErr) {
+        return res.status(500).json({ status: "error", message: countErr.message });
+      }
+
+      const total = countRows[0].total;
+      const hasMore = offset + limit < total;
+
+      // Paginated data
+      db.query(
+        `SELECT id, name, email, message, created_at
+         FROM navics_contact
+         WHERE name LIKE ? OR email LIKE ? OR message LIKE ?
+         ORDER BY id DESC
+         LIMIT ? OFFSET ?`,
+        [searchVal, searchVal, searchVal, limit, offset],
+        (dataErr, rows) => {
+          if (dataErr) {
+            return res.status(500).json({ status: "error", message: dataErr.message });
+          }
+
+          return res.json({
+            status: "success",
+            data: rows,
+            pagination: {
+              page,
+              limit,
+              total,
+              hasMore,
+            },
+          });
+        }
+      );
+    }
+  );
+};
+
+const toggleCompanyStatus = (req, res) => {
+  const { company_id } = req.params;
+
+  if (!company_id) {
+    return res.status(400).json({ status: "fail", message: "company_id required" });
+  }
+
+  // Pehle current status fetch karo
+  db.query(
+    "SELECT status FROM navics_client_company WHERE id = ?",
+    [company_id],
+    (err, rows) => {
+      if (err) return res.status(500).json({ status: "error", message: err.message });
+      if (!rows.length) return res.status(404).json({ status: "fail", message: "Company not found" });
+
+      const newStatus = rows[0].status === "active" ? "inactive" : "active";
+      const updatedAt = moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+      db.query(
+        "UPDATE navics_client_company SET status = ?, updated_at = ? WHERE id = ?",
+        [newStatus, updatedAt, company_id],
+        (updateErr) => {
+          if (updateErr) return res.status(500).json({ status: "error", message: updateErr.message });
+
+          return res.json({
+            status: "success",
+            message: `Company ${newStatus === "active" ? "enabled" : "disabled"} successfully`,
+            new_status: newStatus,
+          });
+        }
+      );
+    }
+  );
+};
+
+module.exports = { getCompanyFeatures, updateCompanyFeatures, accessCompanyFeatures, getContacts, toggleCompanyStatus };

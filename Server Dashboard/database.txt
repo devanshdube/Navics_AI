@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS navics_company_users(
     email VARCHAR(255) NULL UNIQUE,
     mobile VARCHAR(15) NULL UNIQUE,
     role VARCHAR(100) NOT NULL,
+    company_role VARCHAR(100) NOT NULL,
     password VARCHAR(255) NOT NULL,
     details TEXT,
     status ENUM('active','inactive') DEFAULT 'active',
