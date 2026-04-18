@@ -28,7 +28,7 @@ export default function TweetLikesChart({ filters }) {
   };
 
   return (
-    <div className="bg-white p-4 shadow w-full h-[350px]">
+    <div id="tw-chart-likes" className="bg-white p-4 shadow w-full h-[350px]">
       <h2 className="mb-2 font-semibold">Tweet vs Likes</h2>
 
       {/* ✅ Responsive wrapper */}

@@ -8,6 +8,7 @@ import GeoAnalytics from "./chart/GeoAnalytics";
 import GeoCouAnalytics from "./chart/GeoCouAnalytics";
 import DashboardStats from "./chart/DashboardStats";
 import ChatbotPanel from "./ChatbotPanel";
+import { downloadPDF, downloadExcel } from "./downloadReport";
 
 export default function DashboardAnalytics() {
   const [filters, setFilters] = useState({});
@@ -15,11 +16,54 @@ export default function DashboardAnalytics() {
   const [chatOpen, setChatOpen] = useState(false);
   const [chatMode, setChatMode] = useState("panel");
   const [formOpen, setFormOpen] = useState(false);
+  const [pdfLoading, setPdfLoading] = useState(false);
+  const [excelLoading, setExcelLoading] = useState(false);
+
+  const handleDownloadPDF = async () => {
+    setPdfLoading(true);
+    await downloadPDF(filters);
+    setPdfLoading(false);
+  };
+
+  const handleDownloadExcel = async () => {
+    setExcelLoading(true);
+    await downloadExcel(filters);
+    setExcelLoading(false);
+  };
 
   return (
     <div className="relative p-3 sm:p-4 md:p-6">
       {/* Filters */}
       <Filters filters={filters} setFilters={setFilters} />
+
+      {/* Download Buttons */}
+      <div className="flex gap-3 justify-end mb-4 mt-2">
+        <button
+          onClick={handleDownloadPDF}
+          disabled={pdfLoading}
+          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#fe634e] text-white text-sm font-semibold shadow hover:bg-[#e55540] active:scale-95 transition disabled:opacity-60 disabled:cursor-not-allowed"
+        >
+          {pdfLoading ? (
+            <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin inline-block" />
+          ) : (
+            <span>📄</span>
+          )}
+          {pdfLoading ? "Generating..." : "Download PDF"}
+        </button>
+
+        <button
+          onClick={handleDownloadExcel}
+          disabled={excelLoading}
+          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#2bc155] text-white text-sm font-semibold shadow hover:bg-[#24a348] active:scale-95 transition disabled:opacity-60 disabled:cursor-not-allowed"
+        >
+          {excelLoading ? (
+            <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin inline-block" />
+          ) : (
+            <span>📊</span>
+          )}
+          {excelLoading ? "Generating..." : "Download Excel"}
+        </button>
+      </div>
 
       {/* Dashboard Stats */}
       <DashboardStats filters={filters} />

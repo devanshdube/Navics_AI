@@ -29,7 +29,7 @@ export default function TweetEngagementChart({ filters }) {
   };
 
   return (
-    <div className="bg-white p-4 shadow w-full h-[350px]">
+    <div id="tw-chart-engagement" className="bg-white p-4 shadow w-full h-[350px]">
       <h2 className="mb-2 font-semibold">Retweet vs Replies</h2>
 
       {/* ✅ Important wrapper */}

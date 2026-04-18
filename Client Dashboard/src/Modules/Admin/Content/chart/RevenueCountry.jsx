@@ -23,7 +23,7 @@ export default function RevenueCountry({ filters }) {
   }, [filters]);
 
   return (
-    <div className="bg-white p-4 rounded shadow">
+    <div id="chart-revenue-country" className="bg-white p-4 rounded shadow">
       <h3 className="mb-2 font-semibold">Revenue by Country</h3>
 
       <ResponsiveContainer width="100%" height={300}>

@@ -29,7 +29,7 @@ export default function Chart({ filters }) {
   };
 
   return (
-    <div className="bg-white p-4 shadow w-full h-[450px]">
+    <div id="tw-chart-daily-trend" className="bg-white p-4 shadow w-full h-[450px]">
       <h2 className="mb-2 font-semibold">Daily Engagement Trend</h2>
 
       {/* ✅ Responsive wrapper */}

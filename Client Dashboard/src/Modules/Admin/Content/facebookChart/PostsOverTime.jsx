@@ -11,7 +11,7 @@ export default function PostsOverTime({ filters }) {
   }, [filters]);
 
   return (
-    <div className="bg-white p-4 rounded shadow">
+    <div id="fb-chart-posts-over-time" className="bg-white p-4 rounded shadow">
       <h3>Posts Over Time</h3>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={data}>

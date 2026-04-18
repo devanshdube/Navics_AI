@@ -47,7 +47,7 @@ export default function DashboardAdmin() {
     { id: "companyRegister", label: "Add Company", icon: Building2 },
     { id: "charts", label: "Sales", icon: BarChart3 },
     { id: "users", label: "User List", icon: UserCog },
-    // { id: "social", label: "Social Media", icon: Share2 },
+    { id: "social", label: "Social Media", icon: Share2 },
     { id: "contact", label: "Contact", icon: Phone },
   ];
 
@@ -61,8 +61,8 @@ export default function DashboardAdmin() {
         return <DashboardAnalytics />;
       case "users":
         return <CompanyList />;
-      // case "social":
-      //   return <SocialMedia />;
+      case "social":
+        return <SocialMedia />;
       case "contact":
         return <ContactList />;
       default:

@@ -18,7 +18,7 @@ export default function AvgLikesChart() {
   };
 
   return (
-    <div className="bg-white p-4 shadow h-[350px]">
+    <div id="ig-chart-avg-likes" className="bg-white p-4 shadow h-[350px]">
       <h2 className="mb-2 font-semibold">Avg Likes by Type</h2>
 
       <ResponsiveContainer width="100%" height="85%">

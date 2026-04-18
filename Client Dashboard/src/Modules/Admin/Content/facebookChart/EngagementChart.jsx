@@ -13,7 +13,7 @@ export default function EngagementChart({ filters }) {
   }, [filters]);
 
   return (
-    <div className="bg-white p-4 rounded shadow">
+    <div id="fb-chart-engagement" className="bg-white p-4 rounded shadow">
       <h3>Engagement Breakdown</h3>
       <ResponsiveContainer width="100%" height={300}>
         <PieChart>

@@ -6,6 +6,7 @@ import LikesChart from "./instagramChart/LikesChart";
 import SummaryBoxes from "./instagramChart/SummaryBoxes";
 import Filters from "./instagramChart/Filters";
 import { Instagram } from "lucide-react";
+import { downloadIGPDF, downloadIGExcel } from "./downloadIGReport";
 
 export default function DashboardInstagram() {
   const [filters, setFilters] = useState({
@@ -14,11 +15,55 @@ export default function DashboardInstagram() {
   });
 
   const [instagramChatOpen, setInstagramChatOpen] = useState(false);
+  const [pdfLoading, setPdfLoading] = useState(false);
+  const [excelLoading, setExcelLoading] = useState(false);
+
+  const handleDownloadPDF = async () => {
+    setPdfLoading(true);
+    await downloadIGPDF(filters);
+    setPdfLoading(false);
+  };
+
+  const handleDownloadExcel = async () => {
+    setExcelLoading(true);
+    await downloadIGExcel(filters);
+    setExcelLoading(false);
+  };
 
   return (
     <div className="p-4 md:p-6 space-y-6">
       {/* Filters */}
       <Filters filters={filters} setFilters={setFilters} />
+
+      {/* Download Buttons */}
+      <div className="flex gap-3 justify-end">
+        <button
+          onClick={handleDownloadPDF}
+          disabled={pdfLoading}
+          className="flex items-center gap-2 px-4 py-2 rounded-lg text-white text-sm font-semibold shadow active:scale-95 transition disabled:opacity-60 disabled:cursor-not-allowed"
+          style={{ background: "linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888)" }}
+        >
+          {pdfLoading ? (
+            <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin inline-block" />
+          ) : (
+            <span>📄</span>
+          )}
+          {pdfLoading ? "Generating..." : "Download PDF"}
+        </button>
+
+        <button
+          onClick={handleDownloadExcel}
+          disabled={excelLoading}
+          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#2bc155] text-white text-sm font-semibold shadow hover:bg-[#24a348] active:scale-95 transition disabled:opacity-60 disabled:cursor-not-allowed"
+        >
+          {excelLoading ? (
+            <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin inline-block" />
+          ) : (
+            <span>📊</span>
+          )}
+          {excelLoading ? "Generating..." : "Download Excel"}
+        </button>
+      </div>
 
       {/* KPI */}
       <SummaryBoxes filters={filters} />

@@ -26,7 +26,7 @@ export default function CommentsTrendChart({ filters }) {
   };
 
   return (
-    <div className="bg-white p-4 shadow h-[350px]">
+    <div id="ig-chart-comments-trend" className="bg-white p-4 shadow h-[350px]">
       <h2 className="mb-2 font-semibold">Comments Trend</h2>
 
       <ResponsiveContainer width="100%" height="85%">

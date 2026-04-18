@@ -51,7 +51,7 @@ export default function RevenueRegion({ filters }) {
   }, []);
 
   return (
-    <div className="bg-white p-3 sm:p-4 md:p-5 lg:p-6 rounded shadow w-full">
+    <div id="chart-revenue-region" className="bg-white p-3 sm:p-4 md:p-5 lg:p-6 rounded shadow w-full">
       <h3 className="mb-2 font-semibold text-sm sm:text-base md:text-lg">
         Contribution of Revenue by Region
       </h3>

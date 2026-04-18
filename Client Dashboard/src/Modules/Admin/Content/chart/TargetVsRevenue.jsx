@@ -23,7 +23,7 @@ export default function TargetVsRevenue({ filters }) {
   }, [filters]);
 
   return (
-    <div className="bg-white p-4 rounded shadow">
+    <div id="chart-target-vs-revenue" className="bg-white p-4 rounded shadow">
       <h3 className="mb-2 font-semibold">
         Target vs Revenue by Region
       </h3>

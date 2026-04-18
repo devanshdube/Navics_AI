@@ -39,7 +39,7 @@ export default function PageComparison({ filters }) {
   const barH     = Math.max(320, data.length * 42);
 
   return (
-    <div className="bg-white p-4 rounded shadow">
+    <div id="fb-chart-page-comparison" className="bg-white p-4 rounded shadow">
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
         <h3 style={{ margin: 0, fontWeight: 600 }}>Page Comparison</h3>
         <div style={{ display: "flex", gap: 8 }}>

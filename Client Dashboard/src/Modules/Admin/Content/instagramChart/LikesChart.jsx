@@ -43,7 +43,7 @@ export default function LikesChart({ filters }) {
   };
 
   return (
-    <div className="bg-white shadow-sm border border-gray-100 overflow-hidden">
+    <div id="ig-chart-likes" className="bg-white shadow-sm border border-gray-100 overflow-hidden">
       {/* Top color bar */}
       <div className="h-1 w-full" />
 

@@ -27,7 +27,7 @@ export default function TopPostsChart({ filters }) {
   }, [filters]);
 
   return (
-    <div className="bg-white p-4 rounded shadow">
+    <div id="fb-chart-top-posts" className="bg-white p-4 rounded shadow">
       {/* <h3 className="font-bold mb-3">Top 10 Posts</h3> */}
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={data} margin={{ bottom: 60 }}>

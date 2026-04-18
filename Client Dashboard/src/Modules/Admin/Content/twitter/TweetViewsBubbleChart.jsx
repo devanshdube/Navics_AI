@@ -65,7 +65,7 @@ export default function TweetViewsBubbleChart({ filters }) {
   };
 
   return (
-    <div className="bg-white p-4 shadow w-full h-[450px]">
+    <div id="tw-chart-views-bubble" className="bg-white p-4 shadow w-full h-[450px]">
       <h2 className="mb-2 font-semibold">Tweet Views Bubble Chart</h2>
 
       <div className="w-full h-[380px]">

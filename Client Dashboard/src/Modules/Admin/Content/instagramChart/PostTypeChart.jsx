@@ -51,7 +51,7 @@ export default function PostTypeChart({ filters }) {
   const total = data.reduce((sum, d) => sum + d.count, 0);
 
   return (
-    <div className="bg-white shadow-sm border border-gray-100 overflow-hidden">
+    <div id="ig-chart-post-type" className="bg-white shadow-sm border border-gray-100 overflow-hidden">
       {/* Top color bar */}
       <div className="h-1 w-full" />
 
