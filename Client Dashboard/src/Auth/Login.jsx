@@ -10,9 +10,13 @@ export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const [view, setView] = useState("login"); // "login", "forgot", "reset"
   const [formData, setFormData] = useState({ login: "", password: "" });
+  const [forgotData, setForgotData] = useState({ email: "" });
+  const [resetData, setResetData] = useState({ otp: "", newPassword: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,6 +25,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setSuccessMsg("");
 
     if (!formData.login || !formData.password) {
       setError("Email / Mobile and Password are required");
@@ -72,6 +77,67 @@ export default function Login() {
       setLoading(false);
     }
   };
+
+  const handleForgotSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccessMsg("");
+
+    if (!forgotData.email) {
+      setError("Email is required");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const res = await axiosInstance.post("/auth/navics/auth/forgotPassword", forgotData);
+
+      if (res.data.status === "Success") {
+        setSuccessMsg(res.data.message || "OTP sent successfully");
+        setView("reset");
+      } else {
+        setError(res.data.message);
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || "Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResetSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccessMsg("");
+
+    if (!resetData.otp || !resetData.newPassword) {
+      setError("OTP and New Password are required");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const res = await axiosInstance.post("/auth/navics/auth/verifyOtpAndResetPassword", {
+        email: forgotData.email,
+        otp: resetData.otp,
+        newPassword: resetData.newPassword,
+      });
+
+      if (res.data.status === "Success") {
+        setSuccessMsg("Password reset successfully. You can now login.");
+        setView("login");
+        setResetData({ otp: "", newPassword: "" });
+        setForgotData({ email: "" });
+      } else {
+        setError(res.data.message);
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || "Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <style>{`
@@ -497,8 +563,16 @@ export default function Login() {
               <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" /></svg>
             </div>
 
-            <p className="card-welcome">Welcome back</p>
-            <h2 className="card-title">Sign in to your account</h2>
+            <p className="card-welcome">
+              {view === "login" && "Welcome back"}
+              {view === "forgot" && "Reset Password"}
+              {view === "reset" && "Secure Account"}
+            </p>
+            <h2 className="card-title">
+              {view === "login" && "Sign in to your account"}
+              {view === "forgot" && "Forgot your password?"}
+              {view === "reset" && "Set new password"}
+            </h2>
 
             {error && (
               <div className="error-msg">
@@ -509,56 +583,165 @@ export default function Login() {
               </div>
             )}
 
-            <form onSubmit={handleSubmit}>
-              <div className="input-group">
-                <div className="input-wrap">
-                  <input
-                    type="text"
-                    name="login"
-                    placeholder="Email or Mobile number"
-                    value={formData.login}
-                    onChange={handleChange}
-                    autoComplete="username"
-                  />
-                  <span className="input-icon">
-                    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
+            {successMsg && (
+              <div className="error-msg" style={{ background: "#f6ffed", borderColor: "#b7eb8f", color: "#389e0d" }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+                {successMsg}
+              </div>
+            )}
+
+            {view === "login" && (
+              <form onSubmit={handleSubmit}>
+                <div className="input-group">
+                  <div className="input-wrap">
+                    <input
+                      type="text"
+                      name="login"
+                      placeholder="Email or Mobile number"
+                      value={formData.login}
+                      onChange={handleChange}
+                      autoComplete="username"
+                    />
+                    <span className="input-icon">
+                      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
+                    </span>
+                  </div>
+
+                  <div className="input-wrap">
+                    <input
+                      type="password"
+                      name="password"
+                      placeholder="Password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      autoComplete="current-password"
+                    />
+                    <span className="input-icon">
+                      <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+                    </span>
+                  </div>
+                </div>
+
+                <div className="row-options">
+                  <label className="remember-label">
+                    <input type="checkbox" /> Remember me
+                  </label>
+                  <span
+                    className="forgot-link"
+                    onClick={() => {
+                      setView("forgot");
+                      setError("");
+                      setSuccessMsg("");
+                    }}
+                  >
+                    Forgot password?
                   </span>
                 </div>
 
-                <div className="input-wrap">
-                  <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    autoComplete="current-password"
-                  />
-                  <span className="input-icon">
-                    <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+                <button type="submit" className="btn-submit" disabled={loading}>
+                  {loading ? "Signing in…" : "Continue →"}
+                </button>
+              </form>
+            )}
+
+            {view === "forgot" && (
+              <form onSubmit={handleForgotSubmit}>
+                <p style={{ color: "#6b7280", fontSize: "0.9rem", marginBottom: "1.5rem" }}>
+                  Enter your registered email address to receive a password reset OTP.
+                </p>
+                <div className="input-group">
+                  <div className="input-wrap">
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="Email Address"
+                      value={forgotData.email}
+                      onChange={(e) => setForgotData({ email: e.target.value })}
+                    />
+                    <span className="input-icon">
+                      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
+                    </span>
+                  </div>
+                </div>
+
+                <button type="submit" className="btn-submit" disabled={loading}>
+                  {loading ? "Please wait…" : "Send OTP"}
+                </button>
+
+                <div className="register-link" style={{ marginTop: "1rem" }}>
+                  <span
+                    style={{ cursor: "pointer", color: "#fe634e", fontWeight: "600" }}
+                    onClick={() => {
+                      setView("login");
+                      setError("");
+                      setSuccessMsg("");
+                    }}
+                  >
+                    ← Back to Login
                   </span>
                 </div>
-              </div>
+              </form>
+            )}
 
-              <div className="row-options">
-                <label className="remember-label">
-                  <input type="checkbox" /> Remember me
-                </label>
-                <a className="forgot-link">Forgot password?</a>
-              </div>
+            {view === "reset" && (
+              <form onSubmit={handleResetSubmit}>
+                <p style={{ color: "#6b7280", fontSize: "0.9rem", marginBottom: "1.5rem" }}>
+                  Enter the 6-digit OTP sent to your email and set a new password.
+                </p>
+                <div className="input-group">
+                  <div className="input-wrap">
+                    <input
+                      type="text"
+                      name="otp"
+                      placeholder="Enter 6-digit OTP"
+                      value={resetData.otp}
+                      onChange={(e) => setResetData({ ...resetData, otp: e.target.value })}
+                    />
+                    <span className="input-icon">
+                      <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+                    </span>
+                  </div>
+                  <div className="input-wrap">
+                    <input
+                      type="password"
+                      name="newPassword"
+                      placeholder="New Password (min 6 chars)"
+                      value={resetData.newPassword}
+                      onChange={(e) => setResetData({ ...resetData, newPassword: e.target.value })}
+                    />
+                    <span className="input-icon">
+                      <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+                    </span>
+                  </div>
+                </div>
 
-              <button type="submit" className="btn-submit" disabled={loading}>
-                {loading ? "Signing in…" : "Continue →"}
-              </button>
-            </form>
+                <button type="submit" className="btn-submit" disabled={loading}>
+                  {loading ? "Resetting…" : "Reset Password"}
+                </button>
 
-            <div className="register-link">
-              New student?{" "}
-              <Link to="/register">Create your account</Link>
-            </div>
+                <div className="register-link" style={{ marginTop: "1rem" }}>
+                  <span
+                    style={{ cursor: "pointer", color: "#fe634e", fontWeight: "600" }}
+                    onClick={() => {
+                      setView("login");
+                      setError("");
+                      setSuccessMsg("");
+                    }}
+                  >
+                    ← Back to Login
+                  </span>
+                </div>
+              </form>
+            )}
           </div>
         </div>
       </div>
     </>
   );
 }
+{/* <div className="register-link">
+              New student?{" "}
+              <Link to="/register">Create your account</Link>
+            </div> */}

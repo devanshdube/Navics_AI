@@ -45,7 +45,7 @@ export default function DashboardAdmin() {
   const menuItems = [
     // { id: "dashboard", label: "Dashboard", icon: Home },
     { id: "companyRegister", label: "Add Company", icon: Building2 },
-    // { id: "charts", label: "Sales", icon: BarChart3 },
+    { id: "charts", label: "Sales", icon: BarChart3 },
     { id: "users", label: "User List", icon: UserCog },
     // { id: "social", label: "Social Media", icon: Share2 },
     { id: "contact", label: "Contact", icon: Phone },
@@ -57,8 +57,8 @@ export default function DashboardAdmin() {
       //   return <DashboardContent />;
       case "companyRegister":
         return <CompanyRegister />;
-      // case "charts":
-      //   return <DashboardAnalytics />;
+      case "charts":
+        return <DashboardAnalytics />;
       case "users":
         return <CompanyList />;
       // case "social":
